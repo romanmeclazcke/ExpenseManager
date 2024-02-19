@@ -2,7 +2,7 @@ import { Sequelize, DataTypes } from "sequelize";
 
 const sequelize = new Sequelize("sqlite::memory");
 
-const expense = sequelize.define("expense", {
+const Expense = sequelize.define("expense", {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -24,7 +24,11 @@ const expense = sequelize.define("expense", {
     description: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    category:{
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 });
 
-export default expense;
+export default Expense;

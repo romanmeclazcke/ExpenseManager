@@ -41,3 +41,6 @@ class userController {
     }
   }
 }
+
+
+export default user

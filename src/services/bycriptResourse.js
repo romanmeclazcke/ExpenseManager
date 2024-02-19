@@ -8,7 +8,6 @@ export const encryiptPassword= async (password)=>{
     }catch(err){
         console.log(err)
     }
-
 }
 
 export  const verifyPasswordSecurity= async (plainPassword, hashedPassword)=>{

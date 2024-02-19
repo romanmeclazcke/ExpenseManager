@@ -1,25 +1,34 @@
 import { Sequelize, DataTypes } from "sequelize";
 
 const sequelize = new Sequelize("sqlite::memory");
-const User = sequelize.define("user", {
+
+const Income = sequelize.define("income", {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true 
     },
-    email: {
+    idUser: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    price: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+    },
+    date: {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+    description: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    lastname: {
-        type: DataTypes.STRING,
+    category:{
+        type: DataTypes.INTEGER,
         allowNull: false
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
+    }
 });
 
-export default User;
+export default Income;
