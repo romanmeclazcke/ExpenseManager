@@ -6,7 +6,7 @@ import User from "../models/userModel.js";
 
 
 class incomeController {
-  async  getExpensesByUser(req, res) {
+  async  getIncomesByUser(req, res) {
     try {
       const { idUser } = req.params;
       const user = await User.findByPk(idUser);

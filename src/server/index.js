@@ -5,6 +5,9 @@ import morgan from "morgan";
 
 // Importar los router
 import routerExpense from "../routes/expenseRouter.js";
+import routerIncome from "../routes/incomeRouter.js";
+import routerUser from "../routes/userRouter.js";
+import routerSession from "../routes/sessionRouter.js";
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -13,7 +16,13 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json()); 
 
-app.use(routerExpense); // No estás utilizando routerExpense, así que puedes comentarlo temporalmente o eliminarlo
+app.use(routerExpense);
+app.use(routerIncome); 
+app.use(routerSession); 
+app.use(routerUser)
+
+
+
 
 const bootstrap = () => {
     try {

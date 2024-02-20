@@ -1,15 +1,16 @@
-import user from "../models/userModel";
+
+import User from "../models/userModel.js";
 import {
   encryiptPassword,
   verifyPasswordSecurity,
-} from "../services/bycriptResourse";
+} from "../services/bycriptResourse.js";
 
 class userController {
   async createUser(req, res) {
     try {
-      const { email, lastname, password } = req.body;
+      const { email,name, lastname, password } = req.body;
 
-      if ((!email, !lastname, !password)) {
+      if ((!email,!name, !lastname, !password)) {
         return res
           .send(400)
           .json({
@@ -18,7 +19,7 @@ class userController {
           });
       }
 
-      const user = await user.findAll({ where: { email: email } });
+      const user = await User.findAll({ where: { email: email } });
 
       if (user.lenght > 0) {
         res.send(400).json({ message: "el usuario ya existe", details: true });
@@ -27,6 +28,7 @@ class userController {
       const data = {
         email,
         lastname,
+        name,
         password: encryiptPassword(password),
       };
 
@@ -43,4 +45,4 @@ class userController {
 }
 
 
-export default user
+export default userController

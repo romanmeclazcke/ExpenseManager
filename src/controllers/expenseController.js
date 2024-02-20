@@ -3,31 +3,34 @@ import Expense from "../models/expenseModel.js";
 import User from "../models/userModel.js";
 
 class expenseController {
-  async  getExpensesByUser(req, res) {
+  async getExpensesByUser(req, res) {
     try {
       const { idUser } = req.params;
       const user = await User.findByPk(idUser);
-  
+
       if (!user) {
         return res.status(400).json({ message: "El usuario no existe" });
       }
-  
+
       const validFields = ["id", "amount", "date", "categoryId"];
       const { sort, order } = req.query;
-  
+
       let orderOption = [];
+      //verifico si el campo a filtrar es valido
       if (sort && order && validFields.includes(sort)) {
         orderOption.push([sort, order.toUpperCase()]);
       }
-  
+
       const expenses = await Expense.findAll({
         where: { userId: idUser },
-        order: orderOption // Aplica la opción de orden si se proporciona, en sql si le pasas un orden vacio lo ingora
+        order: orderOption, // Aplica la opción de orden si se proporciona, en sequelize si le pasas un orden vacio lo ingora
       });
-  
+
       expenses
-      ?res.status(200).json({ message: expenses, details: true }):
-      res.status(400).json({messaga:"internal server error", details:false})
+        ? res.status(200).json({ message: expenses, details: true })
+        : res
+            .status(400)
+            .json({ messaga: "internal server error", details: false });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error interno del servidor" });
@@ -58,12 +61,10 @@ class expenseController {
 
       expenseByCategory
         ? res.send(200).json({ message: expenseByCategory, details: true })
-        : res
-            .send(400)
-            .json({
-              message: "Error to list the expenses by category",
-              details: false,
-            });
+        : res.send(400).json({
+            message: "Error to list the expenses by category",
+            details: false,
+          });
     } catch (error) {
       console.log(error);
     }
