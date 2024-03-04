@@ -4,7 +4,6 @@ import Income from "../models/incomeModel.js";
 import User from "../models/userModel.js";
 
 
-
 class incomeController {
   async  getIncomesByUser(req, res) {
     try {
