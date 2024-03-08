@@ -33,8 +33,9 @@ class UserController {
         password: hashedPassword,
       });
 
-      // Respondiendo con el usuario creado
-      res.status(200).json({ message: "Usuario creado", details: true });
+      newUser
+      ? res.status(200).json({ message: "Usuario creado", details: true })
+      : res.status(400).json({messsage:"internal server error", details:false});
 
     } catch (error) {
       console.error(error);
