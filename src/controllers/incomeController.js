@@ -64,7 +64,7 @@ class incomeController {
         category
       };
 
-      const created = await Income.create({ data });
+      const created = await Income.create(data);
 
       created
         ? res.send(200).json({ message: "income created", details: true })

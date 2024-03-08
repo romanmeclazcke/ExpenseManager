@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize";
 import { config } from "dotenv";
 config()
 
-const sequelize = new Sequelize('expensemanager', 'root','', {
+export const sequelize = new Sequelize('expensemanager', 'root','', {
   host:'localhost',
   dialect: 'mysql',
   pool: {
@@ -21,4 +21,5 @@ export const syncDatabase = async () => {
     console.error('Error al sincronizar la base de datos:', error);
   }
 };
+
 

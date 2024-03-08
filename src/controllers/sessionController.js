@@ -16,11 +16,11 @@ class sessionController{
                 return res.send(401).json({message:"user not found", details:false})
             }
             
-            const secret = process.env.SECRET
+            const secret = process.env.SECRETJWT
 
-            if(verifyPasswordSecurity(password,existUser[0].password)){
-                const token= jwt.sign({
-                    username:username,
+            if(await verifyPasswordSecurity(password,existUser[0].password)){
+                const token=  jwt.sign({
+                    username:existUser[0].username,
                     id:existUser[0].id,
                     exp:Date.now()+60*1000,
                 },secret)

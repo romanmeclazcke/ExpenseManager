@@ -1,8 +1,9 @@
-import { Sequelize, DataTypes } from "sequelize";
+import {Model, Sequelize, DataTypes } from "sequelize";
+import { sequelize } from "../config/db/dbConection.js";
 
-const sequelize = new Sequelize("sqlite::memory");
+class Category extends Model{}
 
-const Category = sequelize.define("category", {
+ Category.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -17,6 +18,9 @@ const Category = sequelize.define("category", {
         type: DataTypes.STRING,
         allowNull: false
     }
+},{
+    sequelize,
+    modelname:"category"
 });
     
 

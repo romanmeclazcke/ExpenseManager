@@ -8,7 +8,11 @@ import routerExpense from "../routes/expenseRouter.js";
 import routerIncome from "../routes/incomeRouter.js";
 import routerUser from "../routes/userRouter.js";
 import routerSession from "../routes/sessionRouter.js";
-import { syncDatabase } from "../config/db/db.contection.js";
+import routerCategory from "../routes/categoryRouter.js";
+
+
+import { syncDatabase } from "../config/db/dbConection.js";
+
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -21,6 +25,7 @@ app.use(routerExpense);
 app.use(routerIncome); 
 app.use(routerSession); 
 app.use(routerUser)
+app.use(routerCategory)
 
 syncDatabase();
 
