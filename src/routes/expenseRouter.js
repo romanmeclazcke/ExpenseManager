@@ -18,6 +18,11 @@ routerExpense.get(
     }
 );
 
+routerExpense.get(
+    `${path}/category/:idCategory`,(req,res)=>{
+        expensecontroller.getExpenseByCategory(req,res)
+    }
+);
 
 
 routerExpense.post(

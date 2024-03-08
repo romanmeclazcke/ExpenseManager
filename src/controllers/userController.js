@@ -1,48 +1,46 @@
-
 import User from "../models/userModel.js";
 import {
-  encryiptPassword,
+  encryptPassword, // Corregido el nombre de la función
   verifyPasswordSecurity,
 } from "../services/bycriptResourse.js";
 
-class userController {
+class UserController {
   async createUser(req, res) {
     try {
-      const { email,name, lastname, password } = req.body;
+      const { email, name, lastname, password } = req.body;
 
-      if ((!email,!name, !lastname, !password)) {
-        return res
-          .send(400)
-          .json({
-            message: "complete todos los campos porfavor",
-            details: false,
-          });
+      // Verificando si todos los campos están presentes
+      if (!email || !name || !lastname || !password) { // Corregido el error en la condición
+        return res.status(400).json({
+          message: "Complete todos los campos por favor",
+          details: false,
+        });
       }
 
-      const user = await User.findAll({ where: { email: email } });
+      // Verificando si ya existe un usuario con el mismo email
+      const user = await User.findOne({ where: { email: email } }); // Cambiado findAll por findOne
 
-      if (user.lenght > 0) {
-        res.send(400).json({ message: "el usuario ya existe", details: true });
+      if (user) { // Corregido el nombre de la propiedad length
+        return res.status(400).json({ message: "El usuario ya existe", details: true });
       }
 
-      const data = {
+      // Creando el nuevo usuario con la contraseña encriptada
+      const hashedPassword = await encryptPassword(password); // Corregido el nombre de la función
+      const newUser = await User.create({
         email,
-        lastname,
         name,
-        password: encryiptPassword(password),
-      };
+        lastname,
+        password: hashedPassword,
+      });
 
-      const created = await user.create({data});
-
-      created
-      ? res.send(200).json({message:"user creado",details:true})
-      : res.send(500).json({messaga:"internal server error"})
+      // Respondiendo con el usuario creado
+      res.status(200).json({ message: "Usuario creado", details: true });
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      res.status(500).json({ message: "Error interno del servidor" });
     }
   }
 }
 
-
-export default userController
+export default UserController;

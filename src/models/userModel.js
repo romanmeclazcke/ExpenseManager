@@ -1,7 +1,9 @@
-import { Sequelize, DataTypes } from "sequelize";
+import { Model, DataTypes } from "sequelize";
+import { sequelize } from "../config/db/dbConection.js";
 
-const sequelize = new Sequelize("sqlite::memory");
-const User = sequelize.define("user", {
+class User extends Model {}
+
+User.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -24,6 +26,9 @@ const User = sequelize.define("user", {
         type: DataTypes.STRING,
         allowNull: false
     },
+},{
+    sequelize,
+    modelName: "user"
 });
 
 export default User;

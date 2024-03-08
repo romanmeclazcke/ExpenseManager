@@ -6,7 +6,9 @@ class expenseController {
   async getExpensesByUser(req, res) {
     try {
       const { idUser } = req.params;
-      const user = await User.findByPk(idUser);
+      const user = await User.findAll({where:
+       { id:idUser}
+      });
 
       if (!user) {
         return res.status(400).json({ message: "El usuario no existe" });
@@ -22,7 +24,7 @@ class expenseController {
       }
 
       const expenses = await Expense.findAll({
-        where: { userId: idUser },
+        where: { idUser: idUser },
         order: orderOption, // Aplica la opción de orden si se proporciona, en sequelize si le pasas un orden vacio lo ingora
       });
 
@@ -47,21 +49,19 @@ class expenseController {
       });
 
       if (!existCategory) {
-        return res
-          .send(404)
-          .json({ message: "category not found", details: false });
+        return res.status(404).json({ message: "category not found", details: false });
       }
 
       const expenseByCategory = await Expense.findAll({
         where: {
           idUser: idUser,
-          catetegory: idCategory,
+          category: idCategory,
         },
       });
 
       expenseByCategory
-        ? res.send(200).json({ message: expenseByCategory, details: true })
-        : res.send(400).json({
+        ? res.status(200).json({ message: expenseByCategory, details: true })
+        : res.status(400).json({
             message: "Error to list the expenses by category",
             details: false,
           });
@@ -89,21 +89,21 @@ class expenseController {
   async createExpense(req, res) {
     try {
       const { idUser, price, date, description, category } = req.body;
-
+      
       const data = {
         idUser,
         price,
         date,
         description,
-        category,
+        category
       };
 
-      const created = await Expense.create({ data });
+      const created = await Expense.create(data);
 
       created
-        ? res.send(200).json({ message: "expense created", details: true })
+        ? res.status(200).json({ message: created, details: true })
         : res
-            .send(400)
+            .status(400)
             .json({ message: "internal server error", details: false });
     } catch (error) {
       console.log(error);
@@ -112,10 +112,10 @@ class expenseController {
 
   async deleteExpense(req, res) {
     try {
-      const id = req.params;
+      const {id}= req.params;
       const { idUser } = req.body;
 
-      const existAndCanDelete = await Expense.find({
+      const existAndCanDelete = await Expense.findOne({
         where: { id: id, idUser: idUser },
       });
 
@@ -125,7 +125,7 @@ class expenseController {
         });
 
         candelete
-          ? res.send(200).json({ message: "expense deleted", details: true })
+          ? res.status(200).json({ message: "expense deleted", details: true })
           : res
               .status(400)
               .json({ message: "internal server error", details: false });
@@ -141,34 +141,40 @@ class expenseController {
     try {
       const { id } = req.params;
       const { idUser, price, date, description, category } = req.body;
-
-      const expenseToEdit = await Expense.find({
+  
+      // Verificar si el gasto existe
+      const expenseToEdit = await Expense.findOne({
         where: {
           id: id,
           idUser: idUser,
         },
       });
-
-      if (expenseToEdit) {
-        expenseToEdit.price = price;
-        expenseToEdit.date = date;
-        expenseToEdit.description = description;
-        expenseToEdit.category = category;
-
-        const actualizated = await expenseToEdit.save();
-
-        actualizated
-          ? res
-              .send(200)
-              .json({ message: "expense edit successfully", detials: true })
-          : res
-              .send(400)
-              .json({ message: "internal server error", detials: false });
+  
+      if (!expenseToEdit) {
+        return res.status(404).json({ message: "Invalid expense", details: false });
+      }
+  
+      // Actualizar los datos del gasto
+      const updated = await Expense.update(
+        { price: price, date: date, description: description, category: category },
+        {
+          where: {
+            id: id,
+            idUser: idUser
+          }
+        }
+      );
+  
+      if (updated) {
+        // Si se actualizó una fila (éxito)
+        res.status(200).json({ message: "expense actualizated", details: true });
       } else {
-        res.send(401).json({ message: "Unauthorized", details: false });
+        // Si no se actualizó ninguna fila
+        res.status(400).json({ message: "Failed to update expense", details: false });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      res.status(500).json({ message: "Internal server error", details: false });
     }
   }
 }
