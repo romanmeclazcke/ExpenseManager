@@ -23,7 +23,7 @@ class incomeController {
       }
   
       const incomes = await Income.findAll({
-        where: { userId: idUser },
+        where: { idUser: idUser },
         order: orderOption // Aplica la opción de orden si se proporciona, en sql si le pasas un orden vacio lo ingora
       });
   
@@ -67,9 +67,9 @@ class incomeController {
       const created = await Income.create(data);
 
       created
-        ? res.send(200).json({ message: "income created", details: true })
+        ? res.status(200).json({ message: "income created", details: true })
         : res
-            .send(400)
+            .status(400)
             .json({ message: "internal server error", details: false });
     } catch (error) {
       console.log(error);
@@ -78,10 +78,10 @@ class incomeController {
 
   async deleteIncome(req, res) {
     try {
-      const id = req.params;
+      const {id} = req.params;
       const { idUser } = req.body;
 
-      const existAndCanDelete = await Income.find({
+      const existAndCanDelete = await Income.findOne({
         where: { id: id, idUser: idUser },
       });
 
@@ -91,7 +91,7 @@ class incomeController {
         });
 
         candelete
-          ? res.send(200).json({ message: "income deleted", details: true })
+          ? res.status(200).json({ message: "income deleted", details: true })
           : res
               .status(400)
               .json({ message: "internal server error", details: false });
@@ -108,7 +108,7 @@ class incomeController {
       const { id } = req.params;
       const { idUser, price, date, description,category } = req.body;
 
-      const incomeToEdit = await Income.find({
+      const incomeToEdit = await Income.findOne({
         where: {
           id: id,
           idUser: idUser,
@@ -124,10 +124,10 @@ class incomeController {
         const actualizated =await incomeToEdit.save()
 
         actualizated
-        ? res.send(200).json({message:"income edit successfully", detials:true})
-        : res.send(400).json({message:"internal server error", detials:false})
+        ? res.status(200).json({message:"income edit successfully", detials:true})
+        : res.status(400).json({message:"internal server error", detials:false})
       } else {
-        res.send(401).json({ message: "Unauthorized", details: false });
+        res.status(401).json({ message: "Unauthorized", details: false });
       }
     } catch (error) {
       console.log(error);
@@ -142,7 +142,7 @@ class incomeController {
       const existCategory= await Category.findAll({where:{id:idCategory, idUser:idUser}})
   
       if(!existCategory){
-        return res.send(404).json({message:"category not found", details:false})
+        return res.status(404).json({message:"category not found", details:false})
       }
   
   
@@ -152,8 +152,8 @@ class incomeController {
       }})
   
       incomeByCategory
-      ? res.send(200).json({message:incomeByCategory, details:true})
-      : res.send(400).json({message:"Error to list the income by category" ,details:false});
+      ? res.status(200).json({message:incomeByCategory, details:true})
+      : res.status(400).json({message:"Error to list the income by category" ,details:false});
     } catch (error) {
       console.log(error)
     }

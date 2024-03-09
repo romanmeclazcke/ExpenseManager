@@ -2,8 +2,8 @@ import { Sequelize } from "sequelize";
 import { config } from "dotenv";
 config()
 
-export const sequelize = new Sequelize('expensemanager', 'root','', {
-  host:'localhost',
+export const sequelize = new Sequelize(process.env.DATABASE, process.env.USERNAME,process.env.PASSWORD, {
+  host:process.HOST,
   dialect: 'mysql',
   pool: {
     max: 5,
