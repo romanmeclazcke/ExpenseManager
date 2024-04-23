@@ -17,12 +17,13 @@ class sessionController{
             }
             
             const secret = process.env.SECRETJWT
+            console.log(secret)
 
             if(await verifyPasswordSecurity(password,existUser.password)){
                 const token=  jwt.sign({
                     username:existUser.username,
                     id:existUser.id,
-                    exp:Date.now()+60*1000,
+                    exp:Date.now()+60*10000,
                 },secret)
 
              

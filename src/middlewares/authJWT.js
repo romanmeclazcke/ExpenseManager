@@ -1,4 +1,4 @@
-import {jwt} from "jsonwebtoken"
+import jwt from 'jsonwebtoken';
 
 export const verifySession = async(req, res)=> {
     // Obtener el token de la solicitud
@@ -7,8 +7,9 @@ export const verifySession = async(req, res)=> {
     if (!token) {
       return res.status(401).json({ error: 'Token no proporcionado',details:false});
     }
-    const secret= process.env.SECRET
-  
+    const secret= process.env.SECRETJWT
+
+
     // Verificar el token
     jwt.verify(token, secret, (err, decoded) => {
       if (err) {

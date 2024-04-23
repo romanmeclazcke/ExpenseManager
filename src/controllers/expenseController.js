@@ -14,7 +14,7 @@ class expenseController {
         return res.status(400).json({ message: "El usuario no existe" });
       }
 
-      const validFields = ["id", "amount", "date", "categoryId"];
+      const validFields = ["id", "price", "date", "categoryId"];
       const { sort, order } = req.query;
 
       let orderOption = [];

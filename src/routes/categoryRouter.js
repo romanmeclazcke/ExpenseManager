@@ -1,6 +1,8 @@
 import { Router } from "express";
 import categoryController from "../controllers/caretoryController.js";
 
+
+
 const routerCategory= Router()
 const categorycontroller = new categoryController()
 

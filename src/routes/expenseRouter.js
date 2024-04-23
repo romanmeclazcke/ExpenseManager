@@ -1,5 +1,7 @@
 import expenseController from "../controllers/expenseController.js";
 import { Router } from "express";
+import { verifySession } from "../middlewares/authJWT.js";
+
 
 const routerExpense= Router()
 const expensecontroller = new expenseController()
