@@ -1,5 +1,7 @@
 import expenseController from "../controllers/expenseController.js";
 import { Router } from "express";
+import { verifySession } from "../middlewares/authJWT.js";
+
 
 const routerExpense= Router()
 const expensecontroller = new expenseController()
@@ -7,7 +9,7 @@ const expensecontroller = new expenseController()
 const path = "/expense"; 
 
 routerExpense.get(
-    `${path}/all/:idUser`,(req,res)=>{
+    `${path}/all/:idUser`, verifySession,(req,res)=>{
         expensecontroller.getExpensesByUser(req,res)
     }
 );
