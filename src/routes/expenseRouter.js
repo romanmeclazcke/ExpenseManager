@@ -9,7 +9,7 @@ const expensecontroller = new expenseController()
 const path = "/expense"; 
 
 routerExpense.get(
-    `${path}/all/:idUser`,(req,res)=>{
+    `${path}/all/:idUser`, verifySession,(req,res)=>{
         expensecontroller.getExpensesByUser(req,res)
     }
 );
