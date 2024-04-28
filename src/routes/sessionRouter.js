@@ -9,9 +9,14 @@ const path = "/session";
 
 
 routerSession.post(
-    `${path}/createtoken`,(req,res)=>{
+    `${path}/login`,(req,res)=>{
         sessioncontroller.createToken(req,res)
     }
 );
+
+routerSession.delete(
+`${path}/logout`, (req, res) => {
+   sessioncontroller.logout(req, res);
+})
 
 export default routerSession

@@ -27,6 +27,8 @@ class expenseController {
         order: orderOption, // Aplica la opción de orden si se proporciona, en sequelize si le pasas un orden vacio lo ignora
       });
 
+      console.log(expenses);
+
       expenses
         ? res.status(200).json({ message: expenses, details: true })
         : res

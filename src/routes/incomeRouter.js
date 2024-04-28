@@ -1,5 +1,7 @@
 import incomeController from "../controllers/incomeController.js";
 import { Router } from "express";
+import { verifySession } from "../middlewares/authJWT.js";
+
 
 const routerIncome= Router()
 const incomecontroller = new incomeController()
