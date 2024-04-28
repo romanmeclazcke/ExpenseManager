@@ -1,5 +1,6 @@
 import { Router } from "express";
 import categoryController from "../controllers/caretoryController.js";
+import { verifySession } from "../middlewares/authJWT.js";
 
 
 
@@ -16,20 +17,20 @@ routerCategory.get(
 
 
 routerCategory.post(
-    `${path}/new`,(req,res)=>{
+    `${path}/new`,verifySession,(req,res)=>{
         categorycontroller.createCategory(req,res)
     }
 );
 
 
 routerCategory.delete(
-    `${path}/delete/:idCategory`,(req,res)=>{
+    `${path}/delete/:idCategory`,verifySession,(req,res)=>{
         categorycontroller.deleteCategory(req,res)
     }
 );
 
 routerCategory.patch(
-    `${path}/edit/:idCategory`,(req,res)=>{
+    `${path}/edit/:idCategory`,verifySession,(req,res)=>{
         categorycontroller.editCategory(req,res)
     }
 );

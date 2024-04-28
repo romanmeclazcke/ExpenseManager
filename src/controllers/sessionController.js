@@ -40,6 +40,22 @@ class sessionController{
             console.log(error)
         }
     }
+
+
+    async logout(req,res){
+        const token = req.headers['authorization'];
+
+        if(!token){
+            res.status(404).json({message:"you didn't log in"})
+        }
+
+        
+        req.headers['authorization'] = '';
+    
+        res.status(200).json({message:"logout succesfully",details:true});
+
+
+    }
 }
 
 export default sessionController
