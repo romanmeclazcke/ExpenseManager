@@ -10,7 +10,7 @@ class expenseController {
       const user = await User.findAll({ where: { id: idUser } });
 
       if (!user) {
-        return res.status(400).json({ message: "El usuario no existe" });
+        return res.status(400).json({ message: "User not found" });
       }
 
       const validFields = ["id", "price", "date", "categoryId"];

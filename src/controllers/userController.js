@@ -12,7 +12,7 @@ class UserController {
       // Verificando si todos los campos están presentes
       if (!email || !name || !lastname || !password) { // Corregido el error en la condición
         return res.status(400).json({
-          message: "Complete todos los campos por favor",
+          message: "Complete all camps",
           details: false,
         });
       }
@@ -21,7 +21,7 @@ class UserController {
       const user = await User.findOne({ where: { email: email } }); // Cambiado findAll por findOne
 
       if (user) { // Corregido el nombre de la propiedad length
-        return res.status(400).json({ message: "El usuario ya existe", details: true });
+        return res.status(400).json({ message: "User already exist", details: true });
       }
 
       // Creando el nuevo usuario con la contraseña encriptada
@@ -34,12 +34,12 @@ class UserController {
       });
 
       newUser
-      ? res.status(200).json({ message: "Usuario creado", details: true })
+      ? res.status(200).json({ message: "User created", details: true })
       : res.status(400).json({messsage:"internal server error", details:false});
 
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error interno del servidor" });
+      res.status(500).json({ message: "Internal server error" });
     }
   }
 }
