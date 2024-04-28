@@ -16,4 +16,8 @@ routerUser.post(
 );
 
 
+routerUser.patch(`${path}/editpassword`,(req,res)=>{
+    usercontroller.editPassword(req,res)
+})
+
 export default routerUser

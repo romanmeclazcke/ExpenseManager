@@ -35,12 +35,43 @@ class UserController {
 
       newUser
       ? res.status(200).json({ message: "User created", details: true })
-      : res.status(400).json({messsage:"internal server error", details:false});
+      : res.status(400).json({message:"internal server error", details:false});
 
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
     }
+  }
+
+
+  async editPassword(req,res){
+    const {idUser,password, newPassword, confirmNewPassword} =req.body;
+     
+    if(newPassword != confirmNewPassword){
+      return res.status(400).json({message:"password must be same", details:false})
+    }
+    const user = await User.findOne({where:{
+      id:idUser
+    }})
+
+    if(!user){
+      return res.status(404).json({message:"user not found",details:false});
+    }
+     
+
+    const isValid =  await verifyPasswordSecurity(password,user.password);
+
+    if(!isValid){
+      return  res.status(400).json({message:"password invalid",datail:false});
+    }
+
+     user.password = await encryptPassword(newPassword);
+
+     await user.save();
+     
+     res.status(200).json({message:"edit succesfully", details:true});
+   
+
   }
 }
 
