@@ -53,8 +53,7 @@ class incomeController {
 
   async createIncome(req, res) {
     try {
-      const { idUser, price, date, description,
-        category } = req.body;
+      const { idUser, price, date, description,category } = req.body;
 
       const data = {
         idUser,

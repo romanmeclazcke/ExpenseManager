@@ -15,33 +15,33 @@ routerExpense.get(
 );
 
 routerExpense.get(
-    `${path}/:id`,(req,res)=>{
+    `${path}/:id`,verifySession,(req,res)=>{
         expensecontroller.getExpensesById(req,res)
     }
 );
 
 routerExpense.get(
-    `${path}/category/:idCategory`,(req,res)=>{
+    `${path}/category/:idCategory`,verifySession,(req,res)=>{
         expensecontroller.getExpenseByCategory(req,res)
     }
 );
 
 
 routerExpense.post(
-    `${path}/new`,(req,res)=>{
+    `${path}/new`,verifySession,(req,res)=>{
         expensecontroller.createExpense(req,res)
     }
 );
 
 
 routerExpense.delete(
-    `${path}/delete/:id`,(req,res)=>{
+    `${path}/delete/:id`,verifySession,(req,res)=>{
         expensecontroller.deleteExpense(req,res)
     }
 );
 
 routerExpense.patch(
-    `${path}/edit/:id`,(req,res)=>{
+    `${path}/edit/:id`,verifySession,(req,res)=>{
         expensecontroller.editExpense(req,res)
     }
 );

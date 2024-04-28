@@ -35,4 +35,5 @@ Expense.init({
     modelName: "expense"
 });
 
+
 export default Expense;

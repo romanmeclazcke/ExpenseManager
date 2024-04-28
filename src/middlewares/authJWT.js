@@ -10,8 +10,7 @@ export const verifySession = async(req, res)=> {
     }
     const secret= process.env.SECRETJWT
 
-    const authToken = token.replace(/bearer/gim, '').trim();
-    console.log(authToken);
+    const authToken = token.replace(/bearer/gim, '').trim(); //splite el baerer token y se queda solo con el token
     // Verificar el token
     jwt.verify(authToken, secret, (err, decoded) => {
   

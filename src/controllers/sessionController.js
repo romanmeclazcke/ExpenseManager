@@ -40,6 +40,11 @@ class sessionController{
             console.log(error)
         }
     }
+
+
+    async logout(req,res){
+        
+    }
 }
 
 export default sessionController

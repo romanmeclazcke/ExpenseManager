@@ -6,9 +6,8 @@ class expenseController {
   async getExpensesByUser(req, res) {
     try {
       const { idUser } = req.params;
-      const user = await User.findAll({where:
-       { id:idUser}
-      });
+
+      const user = await User.findAll({ where: { id: idUser } });
 
       if (!user) {
         return res.status(400).json({ message: "El usuario no existe" });
@@ -25,7 +24,7 @@ class expenseController {
 
       const expenses = await Expense.findAll({
         where: { idUser: idUser },
-        order: orderOption, // Aplica la opción de orden si se proporciona, en sequelize si le pasas un orden vacio lo ingora
+        order: orderOption, // Aplica la opción de orden si se proporciona, en sequelize si le pasas un orden vacio lo ignora
       });
 
       expenses
@@ -49,7 +48,9 @@ class expenseController {
       });
 
       if (!existCategory) {
-        return res.status(404).json({ message: "category not found", details: false });
+        return res
+          .status(404)
+          .json({ message: "category not found", details: false });
       }
 
       const expenseByCategory = await Expense.findAll({
@@ -89,13 +90,13 @@ class expenseController {
   async createExpense(req, res) {
     try {
       const { idUser, price, date, description, category } = req.body;
-      
+
       const data = {
         idUser,
         price,
         date,
         description,
-        category
+        category,
       };
 
       const created = await Expense.create(data);
@@ -112,7 +113,7 @@ class expenseController {
 
   async deleteExpense(req, res) {
     try {
-      const {id}= req.params;
+      const { id } = req.params;
       const { idUser } = req.body;
 
       const existAndCanDelete = await Expense.findOne({
@@ -141,7 +142,7 @@ class expenseController {
     try {
       const { id } = req.params;
       const { idUser, price, date, description, category } = req.body;
-  
+
       // Verificar si el gasto existe
       const expenseToEdit = await Expense.findOne({
         where: {
@@ -149,32 +150,45 @@ class expenseController {
           idUser: idUser,
         },
       });
-  
+
       if (!expenseToEdit) {
-        return res.status(404).json({ message: "Invalid expense", details: false });
+        return res
+          .status(404)
+          .json({ message: "Invalid expense", details: false });
       }
-  
+
       // Actualizar los datos del gasto
       const updated = await Expense.update(
-        { price: price, date: date, description: description, category: category },
+        {
+          price: price,
+          date: date,
+          description: description,
+          category: category,
+        },
         {
           where: {
             id: id,
-            idUser: idUser
-          }
+            idUser: idUser,
+          },
         }
       );
-  
+
       if (updated) {
         // Si se actualizó una fila (éxito)
-        res.status(200).json({ message: "expense actualizated", details: true });
+        res
+          .status(200)
+          .json({ message: "expense actualizated", details: true });
       } else {
         // Si no se actualizó ninguna fila
-        res.status(400).json({ message: "Failed to update expense", details: false });
+        res
+          .status(400)
+          .json({ message: "Failed to update expense", details: false });
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Internal server error", details: false });
+      res
+        .status(500)
+        .json({ message: "Internal server error", details: false });
     }
   }
 }
