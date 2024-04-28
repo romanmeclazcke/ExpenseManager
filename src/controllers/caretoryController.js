@@ -62,7 +62,7 @@ class categoryController {
         });
     
         if (category.length === 0) {
-          return res.status(404).json({ message: "Invalid category", details: false });
+          return res.status(404).json({ message: "Category not found", details: false });
         }
     
         const data = {

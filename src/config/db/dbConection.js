@@ -3,7 +3,7 @@ import { config } from "dotenv";
 config()
 
 export const sequelize = new Sequelize(process.env.DATABASE, process.env.USERNAME,process.env.PASSWORD, {
-  host:process.HOST,
+  host:process.env.HOST,
   dialect: 'mysql',
   pool: {
     max: 5,
