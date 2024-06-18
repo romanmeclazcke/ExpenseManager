@@ -10,7 +10,7 @@ const categorycontroller = new categoryController()
 const path = "/category"; 
 
 routerCategory.get(
-    `${path}/all/:idUser`,(req,res)=>{
+    `${path}/all/:idUser`,verifySession,(req,res)=>{
        categorycontroller.getCategoryByUser(req,res)
     }
 );
