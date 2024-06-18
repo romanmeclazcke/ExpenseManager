@@ -1,7 +1,6 @@
 import Category from "../models/categoryModel.js";
 import Expense from "../models/expenseModel.js";
 import User from "../models/userModel.js";
-import jwt from "jsonwebtoken"
 import { validateOwnerDataIdUser } from "../services/validateOwnerData.js";
 
 class expenseController {

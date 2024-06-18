@@ -1,9 +1,15 @@
 import Category from "../models/categoryModel.js";
+import { validateOwnerDataIdUser } from "../services/validateOwnerData.js";
 
 class categoryController {
   async getCategoryByUser(req, res) {
     try {
       const { idUser } = req.params;
+      const dataUser= req.session.user;
+
+      if(await validateOwnerDataIdUser(idUser,dataUser)==false){ //esta queriendo acceder a informaciond de otro usuario
+        return res.status(400).json({ message: "Cannot acces" });
+      }
   
       const categories = await Category.findAll({
         where: {

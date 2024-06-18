@@ -2,12 +2,20 @@
 import Category from "../models/categoryModel.js";
 import Income from "../models/incomeModel.js";
 import User from "../models/userModel.js";
+import { validateOwnerDataIdUser } from "../services/validateOwnerData.js";
 
 
 class incomeController {
   async  getIncomesByUser(req, res) {
     try {
       const { idUser } = req.params;
+      const dataUser= req.session.user;
+
+      if(await validateOwnerDataIdUser(idUser,dataUser)==false){ //esta queriendo acceder a informaciond de otro usuario
+        return res.status(400).json({ message: "Cannot acces" });
+      }
+
+
       const user = await User.findByPk(idUser);
   
       if (!user) {
