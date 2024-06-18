@@ -71,8 +71,6 @@ class UserController {
      await user.save();
      
      res.status(200).json({message:"edit succesfully", details:true});
-   
-
   }
 }
 

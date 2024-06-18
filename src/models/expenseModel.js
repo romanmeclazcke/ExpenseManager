@@ -1,11 +1,13 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/db/dbConection.js";
+import Category from "./categoryModel.js";
+import User from "./userModel.js";
 
 class Expense extends Model {}
 
 Expense.init({
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true 
@@ -34,6 +36,17 @@ Expense.init({
     sequelize,
     modelName: "expense"
 });
+
+Expense.belongsTo(User, {
+    foreignKey: 'idUser', // Nombre del campo en Category que referencia al id en User
+    targetKey: 'id', // Campo de User al que hace referencia idUser
+});
+
+Expense.belongsTo(Category, {
+    foreignKey: 'category', // Nombre del campo en Category que referencia al al idCategory
+    targetKey: 'id', // Campo de Category al que hace referencia 
+});
+
 
 
 export default Expense;

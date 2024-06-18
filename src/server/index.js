@@ -9,6 +9,7 @@ import routerIncome from "../routes/incomeRouter.js";
 import routerUser from "../routes/userRouter.js";
 import routerSession from "../routes/sessionRouter.js";
 import routerCategory from "../routes/categoryRouter.js";
+import routerDebts from "../routes/debtsModel.js";
 
 
 import { syncDatabase } from "../config/db/dbConection.js";
@@ -24,8 +25,9 @@ app.use(express.json());
 app.use(routerExpense);
 app.use(routerIncome); 
 app.use(routerSession); 
-app.use(routerUser)
-app.use(routerCategory)
+app.use(routerUser);
+app.use(routerCategory);
+app.use(routerDebts);
 
 syncDatabase();
 

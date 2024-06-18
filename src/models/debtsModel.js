@@ -3,9 +3,9 @@ import { sequelize } from "../config/db/dbConection.js";
 import User from "./userModel.js";
 
 
-class Category extends Model{}
+class Debts extends Model{}
 
- Category.init({
+Debts.init({
     id: {
         type: DataTypes.UUID,
         autoIncrement: true,
@@ -19,16 +19,28 @@ class Category extends Model{}
     name: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    amount: {
+        type:DataTypes.INTEGER,
+        allowNull:false
+    },
+    dueDate: {
+        type:DataTypes,
+        allowNull:false
+    },
+    description:{
+        type:DataTypes.STRING,
+        allowNull:true
     }
+
 },{
     sequelize,
-    modelname:"category"
-});
+    modelName: 'debts',
+})
 
-Category.belongsTo(User, {
-    foreignKey: 'idUser', // Nombre del campo en Category que referencia al id en User
-    targetKey: 'id', // Campo de User al que hace referencia idUser
-});
-    
+Debts.belongsTo(User,{
+    foreignKey: 'idUser',
+    targetKey:'id'
+})
 
-export default Category;
+export default Debts;

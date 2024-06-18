@@ -26,7 +26,7 @@ class categoryController {
           .json({ message: "User has no categories", details: false });
       }
     } catch (error) {
-      console.error(error);
+      
       res
         .status(500)
         .json({ message: "Internal server error", details: false });
@@ -55,7 +55,7 @@ class categoryController {
         ? res.status(200).json({ message: created, details: true })
         : res
             .status(400)
-            .json({ message: "interal server error", details: false });
+            .json({ message: "Interal server error", details: false });
     } catch (error) {}
   }
 
@@ -138,11 +138,10 @@ class categoryController {
 
       deleted
         ? res.status(200).json({ message: deleted, details: true })
-        : res
-            .status(400)
-            .json({ message: "Internal server error", details: false });
+        : 
+         res.status(400).json({message:"cannot deleted", details:false})
     } catch (error) {
-      console.error(error);
+     
       res
         .status(500)
         .json({ message: "Internal server error", details: false });

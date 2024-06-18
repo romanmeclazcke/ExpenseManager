@@ -1,6 +1,6 @@
 import Category from "../models/categoryModel.js";
 import Expense from "../models/expenseModel.js";
-import User from "../models/userModel.js";
+
 import { validateOwnerDataIdUser } from "../services/validateOwnerData.js";
 
 class expenseController {
@@ -14,14 +14,9 @@ class expenseController {
         return res.status(400).json({ message: "Cannot acces" });
       }
 
-      const user = await User.findAll({ where: { id: idUser } });
 
-      if (!user) {
-        return res.status(400).json({ message: "User not found" });
-      }
-
-      const validFields = ["id", "price", "date", "categoryId"];
-      const { sort, order } = req.query;
+      const validFields = [, "price", "date", "categoryId"]; //valores validos para el filtrado
+      const { sort, order } = req.query; //recibe si existe un orden
 
       let orderOption = [];
       //verifico si el campo a filtrar es valido
@@ -86,7 +81,7 @@ class expenseController {
       const { id } = req.params;
       const dataUser = req.session.user;
 
-      const expense = await Expense.findAll({
+      const expense = await Expense.findOne({
         where: { id: id, idUser: dataUser.id },
       });
 

@@ -14,11 +14,6 @@ class incomeController {
         return res.status(400).json({ message: "Cannot access" });
       }
 
-      const user = await User.findByPk(idUser);
-
-      if (!user) {
-        return res.status(400).json({ message: "User not found" });
-      }
 
       const validFields = ["id", "price", "date", "categoryId"];
       const { sort, order } = req.query;
