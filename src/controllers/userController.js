@@ -45,13 +45,14 @@ class UserController {
 
 
   async editPassword(req,res){
-    const {idUser,password, newPassword, confirmNewPassword} =req.body;
+    const {password, newPassword, confirmNewPassword} =req.body;
+    const dataUser = req.session.user;
      
     if(newPassword != confirmNewPassword){
       return res.status(400).json({message:"password must be same", details:false})
     }
     const user = await User.findOne({where:{
-      id:idUser
+      id:dataUser.id
     }})
 
     if(!user){
