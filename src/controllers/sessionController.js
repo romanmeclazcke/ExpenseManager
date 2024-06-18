@@ -7,7 +7,7 @@ class sessionController{
     async createToken(req,res){
         try {
             const{email,password}= req.body
-            
+
             const existUser= await User.findOne({where:{
                 email:email
             }})
@@ -15,10 +15,9 @@ class sessionController{
             if(!existUser){
                 return res.status(401).json({message:"user not found", details:false})
             }
-            
+        
             const secret = process.env.SECRETJWT
-            console.log(secret)
-
+        
             if(await verifyPasswordSecurity(password,existUser.password)){
                 const token=  jwt.sign({
                     username:existUser.username,

@@ -88,7 +88,7 @@ class categoryController {
     
 
     async deleteCategory(req, res) {
-      try {
+      try {F
         const { idCategory } = req.params;
         const { idUser } = req.body;
     

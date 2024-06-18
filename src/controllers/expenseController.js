@@ -1,12 +1,19 @@
 import Category from "../models/categoryModel.js";
 import Expense from "../models/expenseModel.js";
 import User from "../models/userModel.js";
+import jwt from "jsonwebtoken"
+import { validateOwnerDataIdUser } from "../services/validateOwnerData.js";
 
 class expenseController {
   async getExpensesByUser(req, res) {
     try {
       const { idUser } = req.params;
+      const dataUser= req.session.user;
 
+      if(await validateOwnerDataIdUser(idUser,dataUser)==false){ //esta queriendo acceder a informaciond de otro usuario
+        return res.status(400).json({ message: "Cannot acces" });
+      }
+       
       const user = await User.findAll({ where: { id: idUser } });
 
       if (!user) {
@@ -27,7 +34,6 @@ class expenseController {
         order: orderOption, // Aplica la opción de orden si se proporciona, en sequelize si le pasas un orden vacio lo ignora
       });
 
-      console.log(expenses);
 
       expenses
         ? res.status(200).json({ message: expenses, details: true })
