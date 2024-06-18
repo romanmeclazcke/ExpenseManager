@@ -48,10 +48,10 @@ class expenseController {
   async getExpenseByCategory(req, res) {
     try {
       const { idCategory } = req.params;
-      const { idUser } = req.body;
+      const dataUser= req.session.user;
 
       const existCategory = await Category.findAll({
-        where: { id: idCategory, idUser: idUser },
+        where: { id: idCategory, idUser: dataUser.id },
       });
 
       if (!existCategory) {
@@ -62,7 +62,7 @@ class expenseController {
 
       const expenseByCategory = await Expense.findAll({
         where: {
-          idUser: idUser,
+          idUser: dataUser.id,
           category: idCategory,
         },
       });
@@ -81,8 +81,13 @@ class expenseController {
   async getExpensesById(req, res) {
     try {
       const { id } = req.params;
+      const dataUser= req.session.user;
 
       const expense = await Expense.findAll({ where: { id: id } });
+
+      if(await validateDataIdAndDataIdUser(expense[0].idUser, dataUser.id)==false){
+        return res.status(400).json({ message: "Cannot acces" });
+    }
 
       expense
         ? res.status(200).json({ message: expense, details: true })
@@ -96,10 +101,11 @@ class expenseController {
 
   async createExpense(req, res) {
     try {
-      const { idUser, price, date, description, category } = req.body;
+      const { price, date, description, category } = req.body;
+      const dataUser= req.session.user;
 
       const data = {
-        idUser,
+        idUser:dataUser.id,
         price,
         date,
         description,
@@ -121,13 +127,17 @@ class expenseController {
   async deleteExpense(req, res) {
     try {
       const { id } = req.params;
-      const { idUser } = req.body;
+      const dataUser= req.session.user;
 
-      const existAndCanDelete = await Expense.findOne({
-        where: { id: id, idUser: idUser },
+      
+      const expense = await Expense.findOne({
+        where: { id: id, idUser: dataUser.id },
       });
 
-      if (existAndCanDelete) {
+      if(await validateDataIdAndDataIdUser(expense[0].idUser, dataUser.id)==false){
+        res.status(401).json({ message: "Unauthorized", details: false });
+      } 
+      
         const candelete = await Expense.destroy({
           where: { id: id },
         });
@@ -137,9 +147,7 @@ class expenseController {
           : res
               .status(400)
               .json({ message: "internal server error", details: false });
-      } else {
-        res.status(401).json({ message: "Unauthorized", details: false });
-      }
+
     } catch (error) {
       console.log(error);
     }
@@ -148,20 +156,20 @@ class expenseController {
   async editExpense(req, res) {
     try {
       const { id } = req.params;
-      const { idUser, price, date, description, category } = req.body;
+      const { price, date, description, category } = req.body;
+      const dataUser= req.session.user;
+
 
       // Verificar si el gasto existe
       const expenseToEdit = await Expense.findOne({
         where: {
           id: id,
-          idUser: idUser,
+          idUser: dataUser.id,
         },
       });
 
-      if (!expenseToEdit) {
-        return res
-          .status(404)
-          .json({ message: "Invalid expense", details: false });
+      if(expenseToEdit!=null || await validateDataIdAndDataIdUser(expenseToEdit[0].idUser, dataUser.id)==false){
+        return res.status(400).json({ message: "Cannot acces" });
       }
 
       // Actualizar los datos del gasto
@@ -175,7 +183,7 @@ class expenseController {
         {
           where: {
             id: id,
-            idUser: idUser,
+            idUser: dataUser.id,
           },
         }
       );
