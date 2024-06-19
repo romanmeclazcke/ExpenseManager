@@ -9,11 +9,14 @@ const authJWT_1 = require("../middlewares/authJWT");
 const routerIncome = (0, express_1.Router)();
 const incomecontroller = new incomeController_1.default();
 const path = "/income";
-routerIncome.get(`${path}/all/:idUser`, authJWT_1.verifySession, (req, res) => {
+routerIncome.get(`${path}/all`, authJWT_1.verifySession, (req, res) => {
     incomecontroller.getIncomesByUser(req, res);
 });
 routerIncome.get(`${path}/:id`, authJWT_1.verifySession, (req, res) => {
     incomecontroller.getIncomesById(req, res);
+});
+routerIncome.get(`${path}/summary`, authJWT_1.verifySession, (req, res) => {
+    incomecontroller.getIncomeByMonths(req, res);
 });
 routerIncome.get(`${path}/category/:idCategory`, authJWT_1.verifySession, (req, res) => {
     incomecontroller.getIncomeByCategory(req, res);

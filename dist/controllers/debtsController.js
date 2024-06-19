@@ -8,11 +8,15 @@ class DebtsController {
     async getDebtsByUser(req, res) {
         try {
             const dataUser = req.session.user;
-            const validFileds = ["name", "amount", "dueDate", "description"];
             const { sort, order } = req.query;
-            const orderOption = [];
-            if (sort && order && validFileds.includes(sort)) {
-                orderOption.push([sort, order.toUpperCase()]);
+            if (!dataUser || !dataUser.id) {
+                return;
+            }
+            const validFields = ["name", "amount", "dueDate", "description"];
+            let orderOption = []; // defino el tipo de order que es string y ASC o DESC
+            // Verificar si se proporciona un campo de orden válido y un tipo de orden válido
+            if (sort && order && typeof sort === "string" && typeof order === "string" && validFields.includes(sort)) {
+                orderOption.push([sort, order.toUpperCase()]); //"afirmo que el valor sera ASC O DESC"
             }
             const debts = await debtsModel_1.default.findAll({ where: {
                     idUser: dataUser.id,
@@ -30,6 +34,9 @@ class DebtsController {
         try {
             const { id } = req.params;
             const dataUser = req.session.user;
+            if (!dataUser || !dataUser.id) {
+                return;
+            }
             const debt = await debtsModel_1.default.findOne({ where: {
                     id: id,
                     idUser: dataUser.id
@@ -46,6 +53,9 @@ class DebtsController {
         try {
             const dataUser = req.session.user;
             const { name, amount, dueDate, description } = req.body;
+            if (!dataUser || !dataUser.id) {
+                return;
+            }
             const data = {
                 idUser: dataUser.id,
                 name,
@@ -67,6 +77,9 @@ class DebtsController {
             const { id } = req.params;
             const dataUser = req.session.user;
             const { name, amount, dueDate, description } = req.body;
+            if (!dataUser || !dataUser.id) {
+                return;
+            }
             const data = {
                 name,
                 amount,
@@ -89,6 +102,9 @@ class DebtsController {
         try {
             const { id } = req.params;
             const dataUser = req.session.user;
+            if (!dataUser || !dataUser.id) {
+                return;
+            }
             const deleted = await debtsModel_1.default.destroy({ where: {
                     id: id,
                     idUser: dataUser.id

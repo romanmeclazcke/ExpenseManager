@@ -6,7 +6,7 @@ class User extends sequelize_1.Model {
 }
 User.init({
     id: {
-        type: sequelize_1.DataTypes.UUID,
+        type: sequelize_1.DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
@@ -29,6 +29,6 @@ User.init({
     },
 }, {
     sequelize: dbConection_1.sequelize,
-    modelName: "user"
+    modelName: "User"
 });
 exports.default = User;

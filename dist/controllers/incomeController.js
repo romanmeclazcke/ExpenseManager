@@ -3,21 +3,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const dbConection_1 = require("../config/db/dbConection");
 const categoryModel_1 = __importDefault(require("../models/categoryModel"));
 const incomeModel_1 = __importDefault(require("../models/incomeModel"));
 class incomeController {
     async getIncomesByUser(req, res) {
         try {
-            const { idUser } = req.params;
             const dataUser = req.session.user;
-            const validFields = ["id", "price", "date", "categoryId"];
+            if (!dataUser || !dataUser.id) {
+                return;
+            }
+            const validFields = ["price", "date", "categoryId"]; // Campos válidos para ordenar
             const { sort, order } = req.query;
-            let orderOption = [];
-            if (sort && order && validFields.includes(sort)) {
-                orderOption.push([sort, order.toUpperCase()]);
+            let orderOption = []; // Definir correctamente el tipo de orderOption
+            // Verificar si se proporciona un campo de orden válido y un tipo de orden válido
+            if (sort && order && typeof sort === "string" && typeof order === "string" && validFields.includes(sort)) {
+                orderOption.push([sort, order.toUpperCase()]); //"afirmo que el valor sera ASC O DESC"
             }
             const incomes = await incomeModel_1.default.findAll({
-                where: { idUser: idUser },
+                where: { idUser: dataUser.id },
                 order: orderOption, // Aplica la opción de orden si se proporciona, en sql si le pasas un orden vacio lo ingora
             });
             incomes
@@ -36,6 +40,9 @@ class incomeController {
         try {
             const { idCategory } = req.params;
             const dataUser = req.session.user;
+            if (!dataUser || !dataUser.id) {
+                return;
+            }
             const existCategory = await categoryModel_1.default.findAll({
                 where: { id: idCategory, idUser: dataUser.id },
             });
@@ -67,6 +74,9 @@ class incomeController {
         try {
             const { id } = req.params;
             const dataUser = req.session.user;
+            if (!dataUser || !dataUser.id) {
+                return;
+            }
             const income = await incomeModel_1.default.findAll({
                 where: { id: id, idUser: dataUser.id },
             });
@@ -80,10 +90,39 @@ class incomeController {
                 .json({ message: "internal server error", detials: false });
         }
     }
+    async getIncomeByMonths(req, res) {
+        try {
+            const dataUser = req.session.user;
+            if (!dataUser || !dataUser.id) {
+                return res.status(401).json({ message: "Unauthorized", details: false });
+            }
+            const incomesByMonth = await incomeModel_1.default.findAll({
+                where: { idUser: dataUser.id },
+                attributes: [
+                    [dbConection_1.sequelize.fn('DATE_TRUNC', 'month', dbConection_1.sequelize.col('date')), 'month'],
+                    [dbConection_1.sequelize.fn('SUM', dbConection_1.sequelize.col('amount')), 'total'],
+                ],
+                group: ['month'],
+            });
+            console.log(incomesByMonth);
+            if (incomesByMonth) {
+                res.status(200).json({ data: incomesByMonth, details: true });
+            }
+            else {
+                res.status(404).json({ message: "Income not found", details: false });
+            }
+        }
+        catch (error) {
+            res.status(400).json({ message: "Internal server error", details: false });
+        }
+    }
     async createIncome(req, res) {
         try {
             const { price, date, description, category } = req.body;
             const dataUser = req.session.user;
+            if (!dataUser || !dataUser.id) {
+                return;
+            }
             const data = {
                 idUser: dataUser.id,
                 price,
@@ -108,6 +147,9 @@ class incomeController {
         try {
             const { id } = req.params;
             const dataUser = req.session.user;
+            if (!dataUser || !dataUser.id) {
+                return;
+            }
             const candelete = await incomeModel_1.default.destroy({
                 where: { id: id, idUser: dataUser.id },
             });
@@ -128,12 +170,9 @@ class incomeController {
             const { id } = req.params;
             const { price, date, description, category } = req.body;
             const dataUser = req.session.user;
-            const incomeToEdit = await incomeModel_1.default.findOne({
-                where: {
-                    id: id,
-                    idUser: dataUser.id,
-                },
-            });
+            if (!dataUser || !dataUser.id) {
+                return;
+            }
             const updated = await incomeModel_1.default.update({
                 price: price,
                 date: date,

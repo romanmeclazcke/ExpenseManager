@@ -9,7 +9,7 @@ const authJWT_1 = require("../middlewares/authJWT");
 const routerExpense = (0, express_1.Router)();
 const expensecontroller = new expenseController_1.default();
 const path = "/expense";
-routerExpense.get(`${path}/all/:idUser`, authJWT_1.verifySession, (req, res) => {
+routerExpense.get(`${path}/all`, authJWT_1.verifySession, (req, res) => {
     expensecontroller.getExpensesByUser(req, res);
 });
 routerExpense.get(`${path}/:id`, authJWT_1.verifySession, (req, res) => {
@@ -17,6 +17,9 @@ routerExpense.get(`${path}/:id`, authJWT_1.verifySession, (req, res) => {
 });
 routerExpense.get(`${path}/category/:idCategory`, authJWT_1.verifySession, (req, res) => {
     expensecontroller.getExpenseByCategory(req, res);
+});
+routerExpense.get(`${path}/summary`, authJWT_1.verifySession, (req, res) => {
+    expensecontroller.getExpenseByMonths(req, res);
 });
 routerExpense.post(`${path}/new`, authJWT_1.verifySession, (req, res) => {
     expensecontroller.createExpense(req, res);

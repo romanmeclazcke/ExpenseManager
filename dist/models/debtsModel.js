@@ -5,12 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const dbConection_1 = require("../config/db/dbConection");
-const userModel_js_1 = __importDefault(require("./userModel.js"));
+const userModel_1 = __importDefault(require("./userModel"));
 class Debts extends sequelize_1.Model {
 }
 Debts.init({
     id: {
-        type: sequelize_1.DataTypes.UUID,
+        type: sequelize_1.DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
@@ -37,9 +37,9 @@ Debts.init({
     }
 }, {
     sequelize: dbConection_1.sequelize,
-    modelName: 'debts',
+    modelName: 'Debts',
 });
-Debts.belongsTo(userModel_js_1.default, {
+Debts.belongsTo(userModel_1.default, {
     foreignKey: 'idUser',
     targetKey: 'id'
 });

@@ -12,9 +12,9 @@ import routerSession from "../routes/sessionRouter";
 import routerCategory from "../routes/categoryRouter";
 import routerDebts from "../routes/debtsModel";
 import { syncDatabase } from "../config/db/dbConection";
-
-
+import cron from 'node-cron';
 import {UserSession} from "../interface/UserSession";
+import {getDebtsDueWithinWeek} from "../services/notifyDebts/serviceDetectUpcomingDebts"
 
 declare module "express-session" {
     interface SessionData {
@@ -49,6 +49,12 @@ app.use(routerUser);
 app.use(routerCategory);
 app.use(routerDebts);
 syncDatabase();
+
+
+
+cron.schedule('* * * * * *',()=>{
+    getDebtsDueWithinWeek();
+})
 
 
 const bootstrap = () => {

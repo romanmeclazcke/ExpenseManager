@@ -7,11 +7,13 @@ const categoryModel_1 = __importDefault(require("../models/categoryModel"));
 class categoryController {
     async getCategoryByUser(req, res) {
         try {
-            const { idUser } = req.params;
             const dataUser = req.session.user;
+            if (!dataUser || !dataUser.id) {
+                return;
+            }
             const categories = await categoryModel_1.default.findAll({
                 where: {
-                    idUser: idUser,
+                    idUser: dataUser.id,
                 },
             });
             if (categories.length > 0) {
@@ -32,14 +34,17 @@ class categoryController {
     async createCategory(req, res) {
         try {
             const { name } = req.body;
-            const { id } = req.session.user;
-            if (!id || !name) {
+            const dataUser = req.session.user;
+            if (!dataUser || !name) {
                 return res
                     .status(404)
                     .json({ message: "complete all camps", details: false });
             }
+            if (!dataUser.id) {
+                return;
+            }
             const data = {
-                idUser: id,
+                idUser: dataUser.id,
                 name: name,
             };
             const created = await categoryModel_1.default.create(data);
@@ -56,6 +61,9 @@ class categoryController {
             const { idCategory } = req.params;
             const { name } = req.body;
             const dataUser = req.session.user;
+            if (!dataUser || dataUser.id) {
+                return;
+            }
             const category = await categoryModel_1.default.findAll({
                 where: {
                     id: idCategory,
@@ -94,15 +102,15 @@ class categoryController {
         try {
             const { idCategory } = req.params;
             const dataUser = req.session.user;
+            if (!dataUser || dataUser.id) {
+                return;
+            }
             const category = await categoryModel_1.default.findAll({
                 where: {
                     id: idCategory,
                     idUser: dataUser.id,
                 },
             });
-            if (await validateDataIdAndDataIdUser(category[0].idUser, dataUser.id) == false) {
-                return res.status(400).json({ message: "Cannot acces" });
-            }
             if (category.length === 0) {
                 return res
                     .status(404)
