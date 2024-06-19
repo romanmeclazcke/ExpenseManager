@@ -1,7 +1,8 @@
 import { Router } from "express";
-import categoryController from "../controllers/caretoryController";
 import { verifySession } from "../middlewares/authJWT";
 import { Request,Response } from "express";
+import categoryController from "../controllers/caretoryController";
+
 
 
 const routerCategory= Router()

@@ -3,14 +3,7 @@ import { sequelize } from "../config/db/dbConection";
 import Category from "./categoryModel";
 import User from "./userModel";
 
-class Expense extends Model {
-    public id!:number
-    public idUser!:number
-    public price !: number
-    public date!:Date
-    public description!:string
-    public category !: number
-}
+class Expense extends Model {}
 
 Expense.init({
     id: {
@@ -41,18 +34,18 @@ Expense.init({
     }
 },{
     sequelize,
-    modelName: "expense"
+    modelName: "Expense"
 });
 
-Expense.belongsTo(User, {
-    foreignKey: 'idUser', // Nombre del campo en Category que referencia al id en User
-    targetKey: 'id', // Campo de User al que hace referencia idUser
-});
+// Expense.belongsTo(User, {
+//     foreignKey: 'idUser', // Nombre del campo en Category que referencia al id en User
+//     targetKey: 'id', // Campo de User al que hace referencia idUser
+// });
 
-Expense.belongsTo(Category, {
-    foreignKey: 'category', // Nombre del campo en Category que referencia al al idCategory
-    targetKey: 'id', // Campo de Category al que hace referencia 
-});
+// Expense.belongsTo(Category, {
+//     foreignKey: 'category', // Nombre del campo en Category que referencia al al idCategory
+//     targetKey: 'id', // Campo de Category al que hace referencia 
+// });
 
 
 

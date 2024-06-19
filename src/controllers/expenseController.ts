@@ -7,10 +7,12 @@ class expenseController {
     try {
       const dataUser = req.session.user;
 
+      if(!dataUser || !dataUser.id){
+        return
+      }
+
       const validFields = ["price", "date", "categoryId"]; // Campos válidos para ordenar
-
       const { sort, order } = req.query;
-
       let orderOption: [string, "ASC" | "DESC"][] = []; // Definir correctamente el tipo de orderOption
 
       // Verificar si se proporciona un campo de orden válido y un tipo de orden válido
@@ -40,6 +42,10 @@ class expenseController {
     try {
       const { idCategory } = req.params;
       const dataUser = req.session.user;
+
+      if(!dataUser || !dataUser.id){
+        return
+      }
 
       const existCategory = await Category.findAll({
         where: { id: idCategory, idUser: dataUser.id },
@@ -76,6 +82,10 @@ class expenseController {
       const { id } = req.params;
       const dataUser = req.session.user;
 
+      if(!dataUser || !dataUser.id){
+        return
+      }
+
       const expense = await Expense.findOne({
         where: { id: id, idUser: dataUser.id },
       });
@@ -96,6 +106,10 @@ class expenseController {
     try {
       const { price, date, description, category } = req.body;
       const dataUser = req.session.user;
+
+      if(!dataUser || !dataUser.id){
+        return
+      }
 
       const data = {
         idUser: dataUser.id,
@@ -124,6 +138,10 @@ class expenseController {
       const { id } = req.params;
       const dataUser = req.session.user;
 
+      if(!dataUser || !dataUser.id){
+        return
+      }
+
       const expense = await Expense.findOne({
         where: { id: id, idUser: dataUser.id },
       });
@@ -150,13 +168,11 @@ class expenseController {
       const { price, date, description, category } = req.body;
       const dataUser = req.session.user;
 
-      // Verificar si el gasto existe
-      const expenseToEdit = await Expense.findOne({
-        where: {
-          id: id,
-          idUser: dataUser.id,
-        },
-      });
+      if(!dataUser || !dataUser.id){
+        return
+      }
+
+      
 
       // Actualizar los datos del gasto
       const updated = await Expense.update(

@@ -8,6 +8,10 @@ class DebtsController{
             const dataUser = req.session.user;
             const { sort, order } = req.query;
 
+            if(!dataUser || !dataUser.id){
+                return
+              }
+
           
             const validFields = ["name","amount","dueDate","description"]
             let orderOption: [string, "ASC" | "DESC"][] = []; // defino el tipo de order que es string y ASC o DESC
@@ -36,6 +40,10 @@ class DebtsController{
         try {
             const {id}= req.params;
             const dataUser = req.session.user;
+
+            if(!dataUser || !dataUser.id){
+                return
+              }
     
             const debt= await Debts.findOne({where:{
                 id: id,
@@ -54,6 +62,10 @@ class DebtsController{
         try {
             const dataUser = req.session.user;
             const {name, amount, dueDate,description} =req.body;
+
+            if(!dataUser || !dataUser.id){
+                return
+            }
             
             const data ={
                 idUser:dataUser.id,
@@ -81,6 +93,10 @@ class DebtsController{
             const dataUser = req.session.user;
             const {name, amount, dueDate,description} =req.body;
 
+            if(!dataUser || !dataUser.id){
+                return
+            }
+
             const data ={
                 name,
                 amount,
@@ -106,6 +122,10 @@ class DebtsController{
         try {
             const {id}= req.params;
             const dataUser = req.session.user;
+
+            if(!dataUser || !dataUser.id){
+                return
+              }
 
             const deleted = await Debts.destroy({where:{
                 id: id,

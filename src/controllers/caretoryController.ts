@@ -7,6 +7,9 @@ class categoryController {
     try {
       const dataUser = req.session.user;
 
+      if(!dataUser || !dataUser.id){
+        return
+      }
 
       const categories  = await Category.findAll({
         where: {
@@ -32,16 +35,21 @@ class categoryController {
   async createCategory(req:Request, res:Response) {
     try {
       const { name } = req.body;
-      const { id } = req.session.user;
+      const dataUser = req.session.user;
 
-      if (!id || !name) {
+
+      if (!dataUser || !name) {
         return res
           .status(404)
           .json({ message: "complete all camps", details: false });
       }
 
+      if(!dataUser.id){
+        return
+      }
+
       const data = {
-        idUser: id,
+        idUser: dataUser.id,
         name: name,
       };
 
@@ -60,6 +68,10 @@ class categoryController {
       const { idCategory } = req.params;
       const { name } = req.body;
       const dataUser = req.session.user;
+
+      if(!dataUser || dataUser.id){
+        return
+      }
 
 
       const category = await Category.findAll({
@@ -104,6 +116,10 @@ class categoryController {
     try {
       const { idCategory } = req.params;
       const dataUser= req.session.user;
+
+      if(!dataUser || dataUser.id){
+        return
+      }
 
       const category = await Category.findAll({
         where: {

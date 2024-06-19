@@ -6,8 +6,11 @@ import { Request, Response } from "express";
 class incomeController {
   async getIncomesByUser(req: Request, res: Response) {
     try {
-      const { idUser } = req.params;
       const dataUser = req.session.user;
+
+      if(!dataUser || !dataUser.id){
+        return
+      }
 
       const validFields = ["price", "date", "categoryId"]; // Campos válidos para ordenar
 
@@ -21,7 +24,7 @@ class incomeController {
       }
 
       const incomes = await Income.findAll({
-        where: { idUser: idUser },
+        where: { idUser: dataUser.id },
         order: orderOption, // Aplica la opción de orden si se proporciona, en sql si le pasas un orden vacio lo ingora
       });
 
@@ -41,6 +44,10 @@ class incomeController {
     try {
       const { idCategory } = req.params;
       const dataUser = req.session.user;
+
+      if(!dataUser || !dataUser.id){
+        return
+      }
 
       const existCategory = await Category.findAll({
         where: { id: idCategory, idUser: dataUser.id },
@@ -77,6 +84,10 @@ class incomeController {
       const { id } = req.params;
       const dataUser = req.session.user;
 
+      if(!dataUser || !dataUser.id){
+        return
+      }
+
       const income = await Income.findAll({
         where: { id: id, idUser: dataUser.id },
       });
@@ -91,30 +102,39 @@ class incomeController {
     }
   }
 
-  async getIncomeByMonth(req:Request, res:Response){
-    try {
-      const dataUser = req.session.user;
+  // async getIncomeByMonth(req:Request, res:Response){
+  //   try {
+  //     const dataUser = req.session.user;
 
-      const income = await Income.findAll({
-        where: {idUser: dataUser.id },
-        group:date,
+  //     if(!dataUser || !dataUser.id){
+  //       return
+  //     }
+
+
+  //     const income = await Income.findAll({
+  //       where: {idUser: dataUser.id },
+  //       group:date,
         
-      });
+  //     });
 
-      income
-        ? res.status(200).json({ message: income, details: true })
-        : res.status(404).json({ message: "income not found", detials: false });
-    } catch (error) {
-      res
-        .status(400)
-        .json({ message: "internal server error", detials: false });
-    }
-  }
+  //     income
+  //       ? res.status(200).json({ message: income, details: true })
+  //       : res.status(404).json({ message: "income not found", detials: false });
+  //   } catch (error) {
+  //     res
+  //       .status(400)
+  //       .json({ message: "internal server error", detials: false });
+  //   }
+  // }
 
   async createIncome(req: Request, res: Response) {
     try {
       const { price, date, description, category } = req.body;
       const dataUser = req.session.user;
+
+      if(!dataUser || !dataUser.id){
+        return
+      }
 
       const data = {
         idUser: dataUser.id,
@@ -142,6 +162,9 @@ class incomeController {
       const { id } = req.params;
       const dataUser = req.session.user;
 
+      if(!dataUser || !dataUser.id){
+        return
+      }
      
 
       const candelete = await Income.destroy({
@@ -166,15 +189,10 @@ class incomeController {
       const { price, date, description, category } = req.body;
       const dataUser = req.session.user;
 
-      const incomeToEdit = await Income.findOne({
-        where: {
-          id: id,
-          idUser: dataUser.id,
-        },
-      });
-
-    
-
+      if(!dataUser || !dataUser.id){
+        return
+      }
+      
       const updated = await Income.update(
         {
           price: price,

@@ -1,16 +1,9 @@
 import {Model, Sequelize, DataTypes } from "sequelize";
 import { sequelize } from "../config/db/dbConection";
-import User from "./userModel.js";
+import User from "./userModel";
 
 
-class Debts extends Model{
-    public id!:number
-    public idUser!:number
-    public name !: string
-    public amount!:number
-    public dueDate!:Date
-    public description ?: string
-}
+class Debts extends Model{}
 
 Debts.init({
     id: {
@@ -42,7 +35,7 @@ Debts.init({
 
 },{
     sequelize,
-    modelName: 'debts',
+    modelName: 'Debts',
 })
 
 Debts.belongsTo(User,{

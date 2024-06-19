@@ -1,78 +1,113 @@
 import User from "../models/userModel";
 import {
-  encryptPassword, 
+  encryptPassword,
   verifyPasswordSecurity,
 } from "../services/bycriptResourse";
 import { Request, Response } from "express";
 
 class UserController {
-  async createUser(req:Request,res:Response) {
+
+  async  createUser(req: Request, res: Response) {
     try {
       const { email, name, lastname, password } = req.body;
-
-      // Verificando si todos los campos están presentes
-      if (!email || !name || !lastname || !password) { // Corregido el error en la condición
+  
+      // Verificar si todos los campos están presentes y son válidos
+      if (!email || !name || !lastname || !password) {
         return res.status(400).json({
-          message: "Complete all camps",
+          message: "Complete all fields",
           details: false,
         });
       }
-
-      // Verificando si ya existe un usuario con el mismo email
-      const user = await User.findOne({ where: { email: email } }); // Cambiado findAll por findOne
-
-      if (user) { // Corregido el nombre de la propiedad length
-        return res.status(400).json({ message: "User already exist", details: true });
+  
+      // Verificar si ya existe un usuario con el mismo email
+      const existingUser = await User.findOne({ where: { email: email } });
+  
+      if (existingUser) {
+        return res.status(400).json({ message: "User already exists", details: false });
       }
-
-      // Creando el nuevo usuario con la contraseña encriptada
-      const hashedPassword = await encryptPassword(password); // Corregido el nombre de la función
+  
+      // Encriptar la contraseña antes de guardarla en la base de datos
+      const hashedPassword = await encryptPassword(password);
+  
+      // Crear el nuevo usuario en la base de datos
       const newUser = await User.create({
         email,
         name,
         lastname,
         password: hashedPassword,
       });
-
-      newUser
-      ? res.status(200).json({ message: "User created", details: true })
-      : res.status(400).json({message:"internal server error", details:false});
-
+  
+      // Verificar si el usuario se creó correctamente
+      if (newUser) {
+        return res.status(200).json({ message: "User created successfully", details: true });
+      } else {
+        return res.status(400).json({ message: "Failed to create user", details: false });
+      }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "Internal server error", details: false });
     }
   }
+  
+  
 
-
-  async editPassword(req:Request,res:Response){
-    const {password, newPassword, confirmNewPassword} =req.body;
-    const dataUser = req.session.user;
-     
-    if(newPassword != confirmNewPassword){
-      return res.status(400).json({message:"password must be same", details:false})
+  async editPassword(req: Request, res: Response) {
+    try {
+      const { password, newPassword, confirmNewPassword } = req.body;
+      const dataUser = req.session.user;
+  
+      if (!dataUser || !dataUser.id) {
+        return;
+      }
+  
+      if (
+        !newPassword ||
+        !confirmNewPassword ||
+        newPassword !== confirmNewPassword
+      ) {
+        return res
+          .status(400)
+          .json({
+            message: "Passwords must match and cannot be empty",
+            details: false,
+          });
+      }
+  
+      const user = await User.findOne({
+        where: {
+          id: dataUser.id,
+        },
+      });
+  
+      if (!user) {
+        return res.status(404).json({ message: "user not found", details: false });
+      }
+      
+  
+      const isValid = await verifyPasswordSecurity(password, user.password);
+  
+      if (!isValid) {
+        return res
+          .status(400)
+          .json({ message: "password invalid", datail: false });
+      }
+  
+      const passwordEncripted = await encryptPassword(newPassword);
+  
+      const updated = await User.update(
+        { password: passwordEncripted },
+        {
+          where: {
+            id: dataUser.id,
+          },
+        }
+      );
+  
+      updated?
+      res.status(200).json({ message: "edit succesfully", details: true })
+      :res.status(400).json({ message: "error on update password", details: true });
+    } catch (error) {
+      res.status(500).json({ message: "internal server error", details: true })
     }
-
-    const user = await User.findOne({where:{
-      id:dataUser.id
-    }})
-
-    if(!user){
-      return res.status(404).json({message:"user not found",details:false});
-    }
-     
-
-    const isValid = await verifyPasswordSecurity(password,user.password);
-
-    if(!isValid){
-      return  res.status(400).json({message:"password invalid",datail:false});
-    }
-
-     user.password = await encryptPassword(newPassword);
-
-     await user.save();
-     
-     res.status(200).json({message:"edit succesfully", details:true});
   }
 }
 

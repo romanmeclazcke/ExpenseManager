@@ -20,15 +20,16 @@ export const verifySession = (req:Request, res:Response, next:NextFunction) => {
 
     const authToken = token.replace(/bearer/gim, '').trim(); // Dividir el bearer token y quedarse solo con el token
 
-    req.session = { user:null };
+    req.session.user = {id:'', name:''};
     // Verificar el token
     try{
         const data =  jwt.verify(authToken, secret);
+        console.log(data);
         if(data){
-            req.session.user =data;
+            //req.session.user =data;
         }   
     }catch(error){
-        req.session.user=null
+        //req.session.user=null
     }
     next();   
 };

@@ -1,12 +1,10 @@
 import {Model, Sequelize, DataTypes } from "sequelize";
 import { sequelize } from "../config/db/dbConection";
-import User from "./userModel.js";
+import User from "./userModel";
 
 
 class Category extends Model{
-    public id!:number
-    public idUser!:number
-    public name !: string
+    
 }
 
  Category.init({
@@ -26,13 +24,13 @@ class Category extends Model{
     }
 },{
     sequelize,
-    modelName: "category"
+    modelName: "Category"
 });
 
-Category.belongsTo(User, {
-    foreignKey: 'idUser', // Nombre del campo en Category que referencia al id en User
-    targetKey: 'id', // Campo de User al que hace referencia idUser
-});
+// Category.belongsTo(User, {
+//     foreignKey: 'idUser', // Nombre del campo en Category que referencia al id en User
+//     targetKey: 'id', // Campo de User al que hace referencia idUser
+// });
     
 
 export default Category;
