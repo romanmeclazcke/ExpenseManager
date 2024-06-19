@@ -18,16 +18,29 @@ import {UserSession} from "../interface/UserSession";
 
 declare module "express-session" {
     interface SessionData {
-      user?: UserSession;
+      user?: UserSession; //defino atributo que estara presente en mis solicitudes
     }
 }
 
+
+
 dotenv.config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 const app = express();
+const  secretjwt =process.env.SECRETJWT;
+if(!secretjwt){
+    throw new Error("No hay clave secreta para JWT");
+}
+
+app.use(session({
+    secret: secretjwt,
+    resave: false,
+    saveUninitialized: true,
+  })); //habilita la session para las solicitudes
 app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json()); 
+
 
 app.use(routerExpense);
 app.use(routerIncome); 
@@ -35,7 +48,6 @@ app.use(routerSession);
 app.use(routerUser);
 app.use(routerCategory);
 app.use(routerDebts);
-
 syncDatabase();
 
 

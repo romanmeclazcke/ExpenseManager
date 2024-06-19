@@ -8,7 +8,7 @@ const expensecontroller = new expenseController();
 
 const path = "/expense";
 
-routerExpense.get(`${path}/all/:idUser`, verifySession,(req:Request,res:Response) => {
+routerExpense.get(`${path}/all`, verifySession,(req:Request,res:Response) => {
   expensecontroller.getExpensesByUser(req, res);
 });
 

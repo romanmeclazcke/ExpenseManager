@@ -5,7 +5,8 @@ import { Request, Response } from "express";
 class categoryController {
   async getCategoryByUser(req:Request, res:Response) {
     try {
-      const dataUser = req.session.user;
+      const dataUser = req.session.user
+      
 
       if(!dataUser || !dataUser.id){
         return
