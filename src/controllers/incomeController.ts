@@ -1,3 +1,4 @@
+import { sequelize } from "../config/db/dbConection";
 import Category from "../models/categoryModel";
 import Income from "../models/incomeModel";
 
@@ -102,30 +103,34 @@ class incomeController {
     }
   }
 
-  // async getIncomeByMonth(req:Request, res:Response){
-  //   try {
-  //     const dataUser = req.session.user;
-
-  //     if(!dataUser || !dataUser.id){
-  //       return
-  //     }
-
-
-  //     const income = await Income.findAll({
-  //       where: {idUser: dataUser.id },
-  //       group:date,
-        
-  //     });
-
-  //     income
-  //       ? res.status(200).json({ message: income, details: true })
-  //       : res.status(404).json({ message: "income not found", detials: false });
-  //   } catch (error) {
-  //     res
-  //       .status(400)
-  //       .json({ message: "internal server error", detials: false });
-  //   }
-  // }
+  async getIncomeByMonths(req: Request, res: Response) {
+    try {
+      const dataUser = req.session.user;
+  
+      if (!dataUser || !dataUser.id) {
+        return res.status(401).json({ message: "Unauthorized", details: false });
+      }
+  
+      const incomesByMonth = await Income.findAll({
+        where: { idUser: dataUser.id },
+        attributes: [
+          [sequelize.fn('DATE_TRUNC', 'month', sequelize.col('date')), 'month'],
+          [sequelize.fn('SUM', sequelize.col('amount')), 'total'],
+        ],
+        group: ['month'],
+      });
+  
+      console.log(incomesByMonth);
+  
+      if (incomesByMonth) {
+        res.status(200).json({ data: incomesByMonth, details: true });
+      } else {
+        res.status(404).json({ message: "Income not found", details: false });
+      }
+    } catch (error) {
+      res.status(400).json({ message: "Internal server error", details: false });
+    }
+  }
 
   async createIncome(req: Request, res: Response) {
     try {

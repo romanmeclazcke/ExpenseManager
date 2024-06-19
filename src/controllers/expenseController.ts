@@ -1,3 +1,4 @@
+import { sequelize } from "../config/db/dbConection";
 import Category from "../models/categoryModel";
 import Expense from "../models/expenseModel";
 import { Request, Response } from "express";
@@ -102,6 +103,37 @@ class expenseController {
     }
   }
 
+
+  async getExpenseByMonths(req: Request, res: Response) {
+    try {
+      const dataUser = req.session.user;
+      
+  
+      if (!dataUser || !dataUser.id) {
+        return res.status(401).json({ message: "Unauthorized", details: false });
+      }
+       res.status(200).json(dataUser.id);
+
+      const expenseByMonths = await Expense.findAll({
+        where: { idUser: dataUser.id },
+        attributes: [
+          [sequelize.fn('DATE_TRUNC', 'month', sequelize.col('date')), 'month'],
+          [sequelize.fn('SUM', sequelize.col('amount')), 'total'],
+        ],
+        group: ['month'],
+      });
+  
+  
+      if (expenseByMonths) {
+        res.status(200).json({ data: expenseByMonths, details: true });
+      } else {
+        res.status(404).json({ message: "Expense not found", details: false });
+      }
+    } catch (error) {
+      res.status(400).json({ message: "Internal server error", details: false });
+    }
+  }
+
   async createExpense(req: Request, res: Response) {
     try {
       const { price, date, description, category } = req.body;
@@ -142,12 +174,8 @@ class expenseController {
         return
       }
 
-      const expense = await Expense.findOne({
-        where: { id: id, idUser: dataUser.id },
-      });
-
       const candelete = await Expense.destroy({
-        where: { id: id },
+        where: { id: id , idUser: dataUser.id },
       });
 
       candelete

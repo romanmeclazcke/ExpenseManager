@@ -10,7 +10,7 @@ const incomecontroller = new incomeController()
 const path = "/income"; 
 
 routerIncome.get(
-    `${path}/all/:idUser`,verifySession,(req:Request,res:Response)=>{
+    `${path}/all`,verifySession,(req:Request,res:Response)=>{
         incomecontroller.getIncomesByUser(req,res)
     }
 );
@@ -20,6 +20,13 @@ routerIncome.get(
         incomecontroller.getIncomesById(req,res)
     }
 );
+
+routerIncome.get(
+    `${path}/summary`,verifySession,(req:Request,res:Response)=>{
+        incomecontroller.getIncomeByMonths(req,res);
+    }
+);
+
 
 routerIncome.get(
     `${path}/category/:idCategory`,verifySession,(req:Request,res:Response)=>{
