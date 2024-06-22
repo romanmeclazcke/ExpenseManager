@@ -10,12 +10,11 @@ export const getDebtsDueWithinWeek = async () => {
         const debts = await Debts.findAll({
             where: {
                 dueDate: {
-                    [Op.lt]: oneWeekFromNow, // Fecha de vencimiento menor que una semana desde ahora
-                    [Op.gt]: new Date() // Fecha de vencimiento mayor que la fecha actual (para asegurar que esté en el rango deseado)
-                }
+                    [Op.gt]: new Date(), // Fecha de vencimiento menor que una semana desde ahora
+                    [Op.lt]: oneWeekFromNow, // Fecha de vencimiento una semana mayor a la actual
             }
+        }
         });
-
         console.log(debts);
     } catch (error) {
         console.error('Error al obtener las deudas:', error);
