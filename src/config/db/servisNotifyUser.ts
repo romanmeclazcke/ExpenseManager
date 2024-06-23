@@ -1,11 +1,11 @@
 import nodemailer from 'nodemailer'
 
 export const transporter = nodemailer.createTransport({
-    port: 465,               // true for 465, false for other ports
     host: "smtp.gmail.com",
-       auth: {
-            user: process.env.EMAILNOTIFY,
-            pass: process.env.PASSWORDEMAIL,
-         },
-    secure: true,
+    port: 578,               // true for 465, false for other ports
+    secure: false,
+    auth: {
+        user: 'expensemanager12345@gmail.com',
+        pass: 'Portugal1091',
+     }
 });

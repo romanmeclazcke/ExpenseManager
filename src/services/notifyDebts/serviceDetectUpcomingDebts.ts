@@ -25,10 +25,10 @@ export const getDebtsDueWithinWeek = async () => {
       });
 
       debts.forEach((debt)=>{
-        const userEmaial = debt.User.dataValues.email;
+        const userEmail = debt.User.dataValues.email;
         const userName = debt.User.dataValues.name;
         const dataDebt = debt.dataValues
-        
+        sendEmail(userEmail,userName,dataDebt);
       })
 
     // Iterar sobre los resultados y enviar correos electrónicos

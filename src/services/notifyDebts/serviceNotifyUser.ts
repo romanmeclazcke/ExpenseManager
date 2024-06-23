@@ -1,14 +1,25 @@
-import nodemailer from 'nodemailer'
+import { transporter } from '../../config/db/servisNotifyUser';
+import Debts from '../../models/debtsModel';
 
-export const sendEmail = async ()=>{
+
+export const sendEmail = async (userEmail:string,userName:string,dataDebt:Debts)=>{
     try{
         const mailData = {
-              from: process.env.EMAILNOTIFY,  
-              to: 'myfriend@gmail.com',  
+              from: 'expensemanager12345@gmail.com',  
+              to: userEmail,  
               subject: 'Debt notification',
-              text: 'That was easy!',
-              html: "<b>Hello world?</b>", // html body
+              text: 'notificacion deuda',
+              html: `posees una deuda asosciada a tu cuenta
+                ${dataDebt}`, // html body
             };
+
+        transporter.sendMail(mailData,(error,info)=>{
+            if(error){
+                console.log('error :' +error)
+            }else{
+                console.log("email enviado con exito")
+            }
+        })
 
     }catch(error){
         console.log(error);
