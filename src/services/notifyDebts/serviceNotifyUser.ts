@@ -5,7 +5,7 @@ import Debts from '../../models/debtsModel';
 export const sendEmail = async (userEmail:string,userName:string,dataDebt:Debts)=>{
     try{
         const mailData = {
-              from: 'expensemanager12345@gmail.com',  
+              from: process.env.EMAILNOTIFY,  
               to: userEmail,  
               subject: 'Debt notification',
               text: 'notificacion deuda',
