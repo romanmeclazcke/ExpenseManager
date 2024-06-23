@@ -1,26 +1,42 @@
-import { Op }  from "sequelize";
+import { Op } from "sequelize";
 import Debts from "../../models/debtsModel";
 import { sendEmail } from "./serviceNotifyUser";
+import User from "../../models/userModel";
+
 
 export const getDebtsDueWithinWeek = async () => {
-    try {
-        const oneWeekFromNow = new Date();
-        oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7); // Fecha 7 días a partir de ahora
+  try {
+    const oneWeekFromNow = new Date();
+    oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7); // Fecha 7 días a partir de ahora
+   
+    const debts= await Debts.findAll({
+        where: {
+          dueDate: {
+            [Op.gt]: new Date(),
+            [Op.lt]: oneWeekFromNow,
+          }
+        },
+        include: [{
+          model: User,
+          as: 'User',
+          required: true, // esto es para hacer un inner join
+          attributes: ['name', 'email'] // selecciona solo los atributos que necesitas de la tabla User
+        }]
+      });
 
-        const debts = await Debts.findAll({
-            where: {
-                dueDate: {
-                    [Op.gt]: new Date(), // Fecha de vencimiento menor que una semana desde ahora
-                    [Op.lt]: oneWeekFromNow, // Fecha de vencimiento una semana mayor a la actual
-                    //hacer inner join con user para acceder directamente al email del user
-            }
-        }});
+      debts.forEach((debt)=>{
+        const userEmaial = debt.User.dataValues.email;
+        const userName = debt.User.dataValues.name;
+        const dataDebt = debt.dataValues
+        
+      })
 
-        sendEmail() //recibira los datos de la deuda y del user [name, email, toda la info de debts] => se le pasara un arreglo de esta estructura y la log de iteracion sera en el servicio de email
+    // Iterar sobre los resultados y enviar correos electrónicos
+   
 
-        console.log(debts);
-    } catch (error) {
-        console.error('Error al obtener las deudas:', error);
-        throw error;
-    }
+    console.log("Correos electrónicos enviados con éxito");
+  } catch (error) {
+    console.error('Error al obtener las deudas:', error);
+    throw error;
+  }
 };

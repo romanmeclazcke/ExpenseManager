@@ -3,7 +3,9 @@ import { sequelize } from "../config/db/dbConection";
 import User from "./userModel";
 
 
-class Debts extends Model{}
+class Debts extends Model{
+    declare User: User;
+}
 
 Debts.init({
     id: {
@@ -38,9 +40,6 @@ Debts.init({
     modelName: 'Debts',
 })
 
-Debts.belongsTo(User,{
-    foreignKey: 'idUser',
-    targetKey:'id'
-})
+Debts.belongsTo(User, { as: 'User', foreignKey: 'idUser' });
 
 export default Debts;
