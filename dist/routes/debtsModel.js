@@ -9,7 +9,7 @@ const debtsController_1 = __importDefault(require("../controllers/debtsControlle
 const routerDebts = (0, express_1.Router)();
 const debtscontroller = new debtsController_1.default();
 const path = "/debts";
-routerDebts.get(`${path}/all/:idUser`, authJWT_1.verifySession, (req, res) => {
+routerDebts.get(`${path}/all`, authJWT_1.verifySession, (req, res) => {
     debtscontroller.getDebtsByUser(req, res);
 });
 routerDebts.get(`${path}/:id`, authJWT_1.verifySession, (req, res) => {

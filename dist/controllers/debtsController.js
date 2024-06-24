@@ -12,15 +12,15 @@ class DebtsController {
             if (!dataUser || !dataUser.id) {
                 return;
             }
-            const validFields = ["name", "amount", "dueDate", "description"];
-            let orderOption = []; // defino el tipo de order que es string y ASC o DESC
+            //const validFields = ["name","amount","dueDate","description"]
+            //let orderOption: [string, "ASC" | "DESC"][] = []; // defino el tipo de order que es string y ASC o DESC
             // Verificar si se proporciona un campo de orden válido y un tipo de orden válido
-            if (sort && order && typeof sort === "string" && typeof order === "string" && validFields.includes(sort)) {
-                orderOption.push([sort, order.toUpperCase()]); //"afirmo que el valor sera ASC O DESC"
-            }
+            // if (sort &&order && typeof sort === "string" && typeof order === "string" && validFields.includes(sort)) {
+            //   orderOption.push([sort, order.toUpperCase() as "ASC" | "DESC"]);//"afirmo que el valor sera ASC O DESC"
+            // }
             const debts = await debtsModel_1.default.findAll({ where: {
                     idUser: dataUser.id,
-                    order: orderOption //si el orderOption es null, simplemente no aplica las nignuna regla
+                    //order:orderOption //si el orderOption es null, simplemente no aplica las nignuna regla
                 } });
             debts ?
                 res.status(200).json({ message: debts, details: true })

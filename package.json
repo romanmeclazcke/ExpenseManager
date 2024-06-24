@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsnd --respawn --clear ./src/server/index.ts",
     "build": "rimraf ./dist && tsc",
-    "start": "npm run build && node dist/index.js"
+    "start": "npm run build && node dist/server/index.js"
   },
   "keywords": [],
   "author": "",

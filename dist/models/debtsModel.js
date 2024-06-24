@@ -39,8 +39,5 @@ Debts.init({
     sequelize: dbConection_1.sequelize,
     modelName: 'Debts',
 });
-Debts.belongsTo(userModel_1.default, {
-    foreignKey: 'idUser',
-    targetKey: 'id'
-});
+Debts.belongsTo(userModel_1.default, { as: 'User', foreignKey: 'idUser' });
 exports.default = Debts;

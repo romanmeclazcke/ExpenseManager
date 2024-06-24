@@ -3,6 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 import express from "express";
 import session from "express-session";
+import {Worker} from "worker_threads"
 
 // Importar los router
 import routerExpense from "../routes/expenseRouter";
@@ -14,7 +15,7 @@ import routerDebts from "../routes/debtsModel";
 import { syncDatabase } from "../config/db/dbConection";
 import cron from 'node-cron';
 import {UserSession} from "../interface/UserSession";
-import {getDebtsDueWithinWeek} from "../services/notifyDebts/serviceDetectUpcomingDebts"
+
 
 declare module "express-session" {
     interface SessionData {
@@ -23,11 +24,14 @@ declare module "express-session" {
 }
 
 
+const workerDebtsNotify = new Worker('./dist/workers/workerNotify.js');
+
 
 dotenv.config();
 const PORT = process.env.PORT;
 const app = express();
 const  secretjwt =process.env.SECRETJWT;
+
 if(!secretjwt){
     throw new Error("No hay clave secreta para JWT");
 }
@@ -37,6 +41,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
   })); //habilita la session para las solicitudes
+
 app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json()); 
@@ -52,18 +57,19 @@ syncDatabase();
 
 
 cron.schedule('*/15 * * * * *', () => {
-    getDebtsDueWithinWeek();
+    workerDebtsNotify.postMessage('SendNotify')
 });
-
+// implementar threds para poder generar 2 huilos de ejecucion
 
 const bootstrap = () => {
     try {
         app.listen(PORT, () => {
             console.log(`Servidor en ejecución en el puerto ${PORT}`);
         });
-    } catch (err) {
+        } catch (err) {
         console.log(err);
     }
 }
 
 bootstrap();
+    

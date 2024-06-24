@@ -9,7 +9,7 @@ const debtscontroller = new DebtsController()
 const path = "/debts"; 
 
 routerDebts.get(
-    `${path}/all/:idUser`,verifySession,(req:Request,res:Response)=>{
+    `${path}/all`,verifySession,(req:Request,res:Response)=>{
         debtscontroller.getDebtsByUser(req,res);
     }
 );

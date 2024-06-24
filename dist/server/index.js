@@ -8,6 +8,7 @@ const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const express_1 = __importDefault(require("express"));
 const express_session_1 = __importDefault(require("express-session"));
+const worker_threads_1 = require("worker_threads");
 // Importar los router
 const expenseRouter_1 = __importDefault(require("../routes/expenseRouter"));
 const incomeRouter_1 = __importDefault(require("../routes/incomeRouter"));
@@ -16,6 +17,8 @@ const sessionRouter_1 = __importDefault(require("../routes/sessionRouter"));
 const categoryRouter_1 = __importDefault(require("../routes/categoryRouter"));
 const debtsModel_1 = __importDefault(require("../routes/debtsModel"));
 const dbConection_1 = require("../config/db/dbConection");
+const node_cron_1 = __importDefault(require("node-cron"));
+const workerDebtsNotify = new worker_threads_1.Worker('./dist/workers/workerNotify.js');
 dotenv_1.default.config();
 const PORT = process.env.PORT;
 const app = (0, express_1.default)();
@@ -38,10 +41,10 @@ app.use(userRouter_1.default);
 app.use(categoryRouter_1.default);
 app.use(debtsModel_1.default);
 (0, dbConection_1.syncDatabase)();
-const node_cron_1 = __importDefault(require("node-cron"));
-node_cron_1.default.schedule('10 * * * * *', () => {
-    console.log('Running a task every second');
+node_cron_1.default.schedule('*/15 * * * * *', () => {
+    workerDebtsNotify.postMessage('SendNotify');
 });
+// implementar threds para poder generar 2 huilos de ejecucion
 const bootstrap = () => {
     try {
         app.listen(PORT, () => {
