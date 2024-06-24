@@ -51,10 +51,9 @@ app.use(routerDebts);
 syncDatabase();
 
 
-
-cron.schedule('* * * * * *',()=>{
+cron.schedule('*/15 * * * * *', () => {
     getDebtsDueWithinWeek();
-})
+});
 
 
 const bootstrap = () => {
