@@ -20,6 +20,9 @@ class expenseController {
             if (sort && order && typeof sort === "string" && typeof order === "string" && validFields.includes(sort)) {
                 orderOption.push([sort, order.toUpperCase()]); //"afirmo que el valor sera ASC O DESC"
             }
+            else {
+                orderOption.push(["date", "DESC"]);
+            }
             const expenses = await expenseModel_1.default.findAll({
                 where: { idUser: dataUser.id },
                 order: orderOption.length > 0 ? orderOption : undefined, // Aplicar la opción de orden si hay definida

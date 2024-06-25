@@ -19,6 +19,8 @@ class expenseController {
       // Verificar si se proporciona un campo de orden válido y un tipo de orden válido
       if (sort &&order && typeof sort === "string" && typeof order === "string" && validFields.includes(sort)) {
         orderOption.push([sort, order.toUpperCase() as "ASC" | "DESC"]);//"afirmo que el valor sera ASC O DESC"
+      }else{
+        orderOption.push(["date","DESC"]);
       }
 
       const expenses = await Expense.findAll({

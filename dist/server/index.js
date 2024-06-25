@@ -42,7 +42,7 @@ app.use(categoryRouter_1.default);
 app.use(debtsModel_1.default);
 (0, dbConection_1.syncDatabase)();
 node_cron_1.default.schedule('*/15 * * * * *', () => {
-    workerDebtsNotify.postMessage('SendNotify');
+    //workerDebtsNotify.postMessage('SendNotify')
 });
 // implementar threds para poder generar 2 huilos de ejecucion
 const bootstrap = () => {
