@@ -11,7 +11,7 @@ class expenseController {
         try {
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const validFields = ["price", "date", "categoryId"]; // Campos válidos para ordenar
             const { sort, order } = req.query;
@@ -34,9 +34,8 @@ class expenseController {
                     .json({ message: "Internal server error", details: false });
         }
         catch (error) {
-            console.error("Error retrieving expenses:", error); // Mostrar el error en la consola para depuración
             res
-                .status(400)
+                .status(500)
                 .json({ message: "Internal server error", details: false });
         }
     }
@@ -203,7 +202,6 @@ class expenseController {
             }
         }
         catch (error) {
-            console.error(error);
             res
                 .status(500)
                 .json({ message: "Internal server error", details: false });

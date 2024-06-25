@@ -9,7 +9,7 @@ class expenseController {
       const dataUser = req.session.user;
 
       if(!dataUser || !dataUser.id){
-        return
+        return res.status(401).json({message: "Unauthorized" });
       }
 
       const validFields = ["price", "date", "categoryId"]; // Campos válidos para ordenar
@@ -34,9 +34,8 @@ class expenseController {
             .status(400)
             .json({ message: "Internal server error", details: false });
     } catch (error) {
-      console.error("Error retrieving expenses:", error); // Mostrar el error en la consola para depuración
       res
-        .status(400)
+        .status(500)
         .json({ message: "Internal server error", details: false });
     }
   }
@@ -125,6 +124,7 @@ class expenseController {
         group: ['month'],
       });
   
+      
   
       if (expenseByMonths) {
         res.status(200).json({ data: expenseByMonths, details: true });
@@ -230,7 +230,6 @@ class expenseController {
           .json({ message: "Failed to update expense", details: false });
       }
     } catch (error) {
-      console.error(error);
       res
         .status(500)
         .json({ message: "Internal server error", details: false });

@@ -12,6 +12,9 @@ import routerUser from "../routes/userRouter";
 import routerSession from "../routes/sessionRouter";
 import routerCategory from "../routes/categoryRouter";
 import routerDebts from "../routes/debtsRouter";
+import routerSummary from "../routes/summaryRouter";
+
+
 import { syncDatabase } from "../config/db/dbConection";
 import cron from 'node-cron';
 import {UserSession} from "../interface/UserSession";
@@ -53,6 +56,7 @@ app.use(routerSession);
 app.use(routerUser);
 app.use(routerCategory);
 app.use(routerDebts);
+app.use(routerSummary)
 syncDatabase();
 
 

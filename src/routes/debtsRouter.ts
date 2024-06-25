@@ -1,7 +1,7 @@
-import { Router } from "express";
+import { Router, Request,Response  } from "express";
 import { verifySession } from "../middlewares/authJWT";
 import DebtsController from "../controllers/debtsController";
-import { Request,Response } from "express";
+
 
 const routerDebts= Router()
 const debtscontroller = new DebtsController()
