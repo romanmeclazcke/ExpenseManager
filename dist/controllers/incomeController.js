@@ -20,20 +20,24 @@ class incomeController {
             if (sort && order && typeof sort === "string" && typeof order === "string" && validFields.includes(sort)) {
                 orderOption.push([sort, order.toUpperCase()]); //"afirmo que el valor sera ASC O DESC"
             }
-            const incomes = await incomeModel_1.default.findAll({
+            else {
+                orderOption.push(["date", "DESC"]);
+            }
+            const expenses = await incomeModel_1.default.findAll({
                 where: { idUser: dataUser.id },
-                order: orderOption, // Aplica la opción de orden si se proporciona, en sql si le pasas un orden vacio lo ingora
+                order: orderOption.length > 0 ? orderOption : undefined, // Aplicar la opción de orden si hay definida
             });
-            incomes
-                ? res.status(200).json({ message: incomes, details: true })
+            expenses
+                ? res.status(200).json({ message: expenses, details: true })
                 : res
                     .status(400)
-                    .json({ messaga: "internal server error", details: false });
+                    .json({ message: "Internal server error", details: false });
         }
         catch (error) {
+            console.error("Error retrieving expenses:", error); // Mostrar el error en la consola para depuración
             res
                 .status(400)
-                .json({ message: "internal server error", detials: false });
+                .json({ message: "Internal server error", details: false });
         }
     }
     async getIncomeByCategory(req, res) {
