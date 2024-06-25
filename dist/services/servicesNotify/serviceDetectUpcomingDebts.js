@@ -26,6 +26,7 @@ class servicesNotify {
                         attributes: ['name', 'email'] // selecciona solo los atributos que necesitas de la tabla User
                     }]
             });
+            console.log(debts.length);
             debts.forEach(async (debt) => {
                 const userEmail = debt.User.dataValues.email;
                 const userName = debt.User.dataValues.name;

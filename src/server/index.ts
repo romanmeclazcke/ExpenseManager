@@ -57,7 +57,7 @@ syncDatabase();
 
 
 cron.schedule('*/15 * * * * *', () => {
-    workerDebtsNotify.postMessage('SendNotify')
+    //workerDebtsNotify.postMessage('SendNotify')
 });
 // implementar threds para poder generar 2 huilos de ejecucion
 

@@ -24,6 +24,7 @@ class servicesNotify{
         }]
       });
   
+      console.log(debts.length)
       debts.forEach(async (debt) => {
         const userEmail = debt.User.dataValues.email;
         const userName = debt.User.dataValues.name;
