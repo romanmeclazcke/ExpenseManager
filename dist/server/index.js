@@ -15,7 +15,7 @@ const incomeRouter_1 = __importDefault(require("../routes/incomeRouter"));
 const userRouter_1 = __importDefault(require("../routes/userRouter"));
 const sessionRouter_1 = __importDefault(require("../routes/sessionRouter"));
 const categoryRouter_1 = __importDefault(require("../routes/categoryRouter"));
-const debtsModel_1 = __importDefault(require("../routes/debtsModel"));
+const debtsRouter_1 = __importDefault(require("../routes/debtsRouter"));
 const dbConection_1 = require("../config/db/dbConection");
 const node_cron_1 = __importDefault(require("node-cron"));
 const workerDebtsNotify = new worker_threads_1.Worker('./dist/workers/workerNotify.js');
@@ -39,7 +39,7 @@ app.use(incomeRouter_1.default);
 app.use(sessionRouter_1.default);
 app.use(userRouter_1.default);
 app.use(categoryRouter_1.default);
-app.use(debtsModel_1.default);
+app.use(debtsRouter_1.default);
 (0, dbConection_1.syncDatabase)();
 node_cron_1.default.schedule('*/15 * * * * *', () => {
     //workerDebtsNotify.postMessage('SendNotify')

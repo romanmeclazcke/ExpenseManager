@@ -3,34 +3,36 @@ import { Request, Response } from "express";
 
 
 class DebtsController{
-    async getDebtsByUser(req:Request,res:Response){
-        try{
+    async getDebtsByUser(req: Request, res: Response) {
+        try {
             const dataUser = req.session.user;
-            const { sort, order } = req.query;
-
-            if(!dataUser || !dataUser.id){
-                return
+    
+            if (!dataUser || !dataUser.id) {
+                return res.status(401).json({ message: "User not authenticated", details: false });
             }
-
-          
-            //const validFields = ["name","amount","dueDate","description"]
-            //let orderOption: [string, "ASC" | "DESC"][] = []; // defino el tipo de order que es string y ASC o DESC
-      
-            // Verificar si se proporciona un campo de orden válido y un tipo de orden válido
-            // if (sort &&order && typeof sort === "string" && typeof order === "string" && validFields.includes(sort)) {
-            //   orderOption.push([sort, order.toUpperCase() as "ASC" | "DESC"]);//"afirmo que el valor sera ASC O DESC"
-            // }
-
-            const debts = await Debts.findAll({where:{
-                idUser:dataUser.id,
-                //order:orderOption //si el orderOption es null, simplemente no aplica las nignuna regla
-            }})
-
-        
-            debts ?
-            res.status(200).json({message:debts, details:true})
-            :res.status(404).json({message:"debts not found", details:false})
-        }catch(error){
+    
+            const { sort, order } = req.query;
+            const validFields = ["name", "amount", "dueDate", "description"];
+            let orderOption: [string, "ASC" | "DESC"][] = [];
+    
+            if (sort && order && typeof sort === "string" && typeof order === "string" && validFields.includes(sort)) {
+                orderOption.push([sort, order.toUpperCase() as "ASC" | "DESC"]);
+            } else {
+                orderOption.push(["dueDate", "DESC"]); // Orden por defecto si los parámetros no son válidos
+            }
+    
+            const debts = await Debts.findAll({
+                where: { idUser: dataUser.id },
+                order: orderOption // Aquí es donde pasamos el orderOption correctamente
+            });
+    
+            if (debts.length > 0) {
+                res.status(200).json({ message: debts, details: true });
+            } else {
+                res.status(404).json({ message: "Debts not found", details: false });
+            }
+        } catch (error) {
+            console.error("Error in getDebtsByUser:", error);
             res.status(500).json({ message: "Internal server error", details: false });
         }
     }

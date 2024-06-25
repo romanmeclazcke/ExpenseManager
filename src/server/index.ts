@@ -11,7 +11,7 @@ import routerIncome from "../routes/incomeRouter";
 import routerUser from "../routes/userRouter";
 import routerSession from "../routes/sessionRouter";
 import routerCategory from "../routes/categoryRouter";
-import routerDebts from "../routes/debtsModel";
+import routerDebts from "../routes/debtsRouter";
 import { syncDatabase } from "../config/db/dbConection";
 import cron from 'node-cron';
 import {UserSession} from "../interface/UserSession";
