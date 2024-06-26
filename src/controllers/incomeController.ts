@@ -35,9 +35,8 @@ class incomeController {
             .status(400)
             .json({ message: "Internal server error", details: false });
     } catch (error) {
-      console.error("Error retrieving expenses:", error); // Mostrar el error en la consola para depuración
       res
-        .status(400)
+        .status(500)
         .json({ message: "Internal server error", details: false });
     }
   }
