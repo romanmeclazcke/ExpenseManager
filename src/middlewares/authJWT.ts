@@ -19,7 +19,6 @@ export const verifySession = (req: Request, res: Response, next: NextFunction) =
 
     try {
         const decoded: any = jwt.verify(authToken, secret); // Decodificar el token JWT
-        console.log(decoded);
 
         if (decoded && typeof decoded === 'object' && decoded.id && decoded.name) {
             // Verificación básica para asegurar que decoded es un objeto y tiene id y name

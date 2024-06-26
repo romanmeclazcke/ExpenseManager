@@ -6,6 +6,7 @@ class SavingGoalsController {
   async getSavingGoals(req: Request, res: Response) {
     try {
       const dataUser = req.session.user;
+      console.log(dataUser);
 
       if (!dataUser || !dataUser.id) {
         return res.status(401).json({ message: "Unauthorized" });
@@ -26,10 +27,7 @@ class SavingGoalsController {
             endDate: goal.endDate,
             ultimateGoal: goal.ultimateGoal,
             currentAmount: goal.currentAmount,
-            progressPercentage: await calculatePercentage(
-              goal.ultimateGoal,
-              goal.currentAmount
-            ),
+            progressPercentage: await calculatePercentage(goal.ultimateGoal,goal.currentAmount),
           };
           return result;
         })
@@ -143,7 +141,7 @@ class SavingGoalsController {
   async editSavingGoal(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { name, endDate, ultimateGoal, currentAmount } = req.body;
+      const { name, endDate, ultimateGoal} = req.body;
       const dataUser = req.session.user;
 
       if (!dataUser || !dataUser.id) {
@@ -154,7 +152,6 @@ class SavingGoalsController {
         { name:name, 
           endDate:endDate, 
           ultimateGoal:ultimateGoal, 
-          currentAmount:currentAmount 
         },
         {
           where: {
@@ -168,6 +165,51 @@ class SavingGoalsController {
         ? res
             .status(200)
             .json({ message: "goal edit successfully", detials: true })
+        : res
+            .status(404)
+            .json({ message: "goal not fount", detials: false });
+    } catch (error) {
+      res
+        .status(400)
+        .json({ message: "internal server error", detials: false });
+    }
+  }
+
+  async editAmountCurrentSavingGoal(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { amountCurrent} = req.body;
+      const dataUser = req.session.user;
+
+      if (!dataUser || !dataUser.id) {
+        return;
+      }
+
+      const goal = await SavingGoals.findOne(
+        {
+          where: {
+            id: id,
+            idUser: dataUser.id,
+          },
+        }
+      );
+      if(!goal){
+        return res.status(404).json({ message: "goal not fount", detials:false});
+      }
+      console.log(amountCurrent);
+      if(amountCurrent>0){
+        goal.currentAmount += amountCurrent;
+      }else{
+        goal.currentAmount -=-(amountCurrent);// al recibir un valor negativo y aplicarle el - quedaria --X por ende pasa a positivo 
+        //y ahora si decrementa el valor de forma correcta
+      }
+
+     const updated =  await goal.save();
+
+      updated
+      ? res
+            .status(200)
+            .json({ message: updated, detials: true })
         : res
             .status(404)
             .json({ message: "goal not fount", detials: false });

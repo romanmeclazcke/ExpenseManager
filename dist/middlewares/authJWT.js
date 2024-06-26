@@ -18,7 +18,6 @@ const verifySession = (req, res, next) => {
     const authToken = token.replace(/bearer/gim, '').trim(); // Limpiar el token Bearer y obtener solo el token
     try {
         const decoded = jsonwebtoken_1.default.verify(authToken, secret); // Decodificar el token JWT
-        console.log(decoded);
         if (decoded && typeof decoded === 'object' && decoded.id && decoded.name) {
             // Verificación básica para asegurar que decoded es un objeto y tiene id y name
             const { id, name } = decoded; // Extraer id y name del objeto decoded

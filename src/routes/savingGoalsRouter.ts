@@ -29,4 +29,8 @@ routerSavingGoals.patch(`${path}/edit/:id`, verifySession,(req:Request,res:Respo
   savingcontroller.editSavingGoal(req, res);
 });
 
+routerSavingGoals.patch(`${path}/edit/amountcurrent/:id`, verifySession,(req:Request,res:Response) => {
+  savingcontroller.editAmountCurrentSavingGoal(req, res);
+});
+
 export default routerSavingGoals;
