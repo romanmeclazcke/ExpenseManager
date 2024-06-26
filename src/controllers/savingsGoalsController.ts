@@ -196,12 +196,21 @@ class SavingGoalsController {
       if(!goal){
         return res.status(404).json({ message: "goal not fount", detials:false});
       }
-      console.log(amountCurrent);
+
+
       if(amountCurrent>0){
-        goal.currentAmount += amountCurrent;
+        if(goal.currentAmount+amountCurrent> goal.ultimateGoal){ //si supero el limite el currentamount sera igual al limite
+          goal.currentAmount = goal.ultimateGoal;
+        }else{
+          goal.currentAmount += amountCurrent; //sino sumo
+        }
       }else{
-        goal.currentAmount -=-(amountCurrent);// al recibir un valor negativo y aplicarle el - quedaria --X por ende pasa a positivo 
-        //y ahora si decrementa el valor de forma correcta
+        if(goal.currentAmount- (-amountCurrent)<0){ //si estoy decrementando el actual y bajo de 0 el actual sera 0
+          goal.currentAmount=0;
+        }else{
+          goal.currentAmount -=-(amountCurrent);// al recibir un valor negativo y aplicarle el - quedaria --X por ende pasa a positivo 
+                                              //y ahora si decrementa el valor de forma correcta 
+        }
       }
 
      const updated =  await goal.save();
