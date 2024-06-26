@@ -4,7 +4,12 @@ import User from "./userModel";
 
 
 class SavingGoals extends Model {
-
+    declare id: number
+    declare idUser :number
+    declare name:string
+    declare endDate: Date
+    declare ultimateGoal: number
+    declare currentAmount: number
 }
 
 SavingGoals.init({
@@ -26,6 +31,10 @@ SavingGoals.init({
         type :DataTypes.DATE,
         allowNull:false
     },
+    ultimateGoal:{
+        type: DataTypes.INTEGER,
+        allowNull:false
+    },
     currentAmount:{
         type :DataTypes.INTEGER,
         defaultValue:0
@@ -39,3 +48,5 @@ SavingGoals.belongsTo(User,{
     foreignKey:"idUser",
     targetKey: "id"
 });
+
+export default SavingGoals;
