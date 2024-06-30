@@ -19,7 +19,6 @@ const debtsRouter_1 = __importDefault(require("../routes/debtsRouter"));
 const summaryRouter_1 = __importDefault(require("../routes/summaryRouter"));
 const savingGoalsRouter_1 = __importDefault(require("../routes/savingGoalsRouter"));
 const dbConection_1 = require("../config/db/dbConection");
-const node_cron_1 = __importDefault(require("node-cron"));
 const workerDebtsNotify = new worker_threads_1.Worker('./dist/workers/workerNotify.js');
 dotenv_1.default.config();
 const PORT = process.env.PORT;
@@ -45,9 +44,9 @@ app.use(debtsRouter_1.default);
 app.use(summaryRouter_1.default);
 app.use(savingGoalsRouter_1.default);
 (0, dbConection_1.syncDatabase)();
-node_cron_1.default.schedule('*/15 * * * * *', () => {
-    workerDebtsNotify.postMessage('SendNotify');
-});
+//  cron.schedule('*/15 * * * * *', () => {
+//      workerDebtsNotify.postMessage('SendNotify')
+//  });
 const bootstrap = () => {
     try {
         app.listen(PORT, () => {

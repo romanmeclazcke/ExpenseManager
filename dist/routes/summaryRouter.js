@@ -12,4 +12,7 @@ const path = "/summary";
 routerSummary.get(`${path}/all`, authJWT_1.verifySession, (req, res) => {
     summarycontroller.generateSummaryExpenseAndIncome(req, res);
 });
+routerSummary.get(`${path}/total/bymonth`, authJWT_1.verifySession, (req, res) => {
+    summarycontroller.getSummaryByMonths(req, res);
+});
 exports.default = routerSummary;

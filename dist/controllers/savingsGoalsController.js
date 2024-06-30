@@ -9,7 +9,6 @@ class SavingGoalsController {
     async getSavingGoals(req, res) {
         try {
             const dataUser = req.session.user;
-            console.log(dataUser);
             if (!dataUser || !dataUser.id) {
                 return res.status(401).json({ message: "Unauthorized" });
             }

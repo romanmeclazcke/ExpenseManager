@@ -14,4 +14,12 @@ routerSummary.get(
     }
 )
 
+routerSummary.get(
+    `${path}/total/bymonth`,verifySession,(req:Request,res:Response)=>{
+           summarycontroller.getSummaryByMonths(req,res);
+       }
+)
+
+
+
 export default routerSummary;

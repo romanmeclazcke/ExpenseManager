@@ -32,7 +32,6 @@ class DebtsController {
             }
         }
         catch (error) {
-            console.error("Error in getDebtsByUser:", error);
             res.status(500).json({ message: "Internal server error", details: false });
         }
     }

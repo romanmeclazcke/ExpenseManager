@@ -109,6 +109,7 @@ class expenseController {
                     [dbConection_1.sequelize.fn('SUM', dbConection_1.sequelize.col('amount')), 'total'],
                 ],
                 group: ['month'],
+                order: ['month']
             });
             if (expenseByMonths) {
                 res.status(200).json({ data: expenseByMonths, details: true });

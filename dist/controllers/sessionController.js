@@ -26,18 +26,6 @@ class sessionController {
                     .status(400)
                     .json({ message: "secret not found", details: false });
             }
-            // if(await verifyPasswordSecurity(password,existUser.password)){
-            //     const token=  jwt.sign({
-            //         name:existUser.name,
-            //         id:existUser.id,
-            //         exp:Date.now()+60*10000,
-            //     },secret)
-            //     token
-            //     ? res.status(200).json({message:token,details:true})
-            //     : res.status(500).json({message:"internal server error",details:false})
-            // }else{
-            //     res.status(400).json({message:"password incorrect",details:false})
-            // }
             const hashPassword = await (0, bycriptResourse_1.verifyPasswordSecurity)(password, existUser.password);
             if (hashPassword) {
                 const token = jsonwebtoken_1.default.sign({
@@ -53,16 +41,21 @@ class sessionController {
             }
         }
         catch (error) {
-            console.log(error);
+            res.status(500).json({ message: "internal server error", details: false });
         }
     }
     async logout(req, res) {
-        const token = req.headers["authorization"];
-        if (!token) {
-            res.status(404).json({ message: "you didn't log in" });
+        try {
+            const token = req.headers["authorization"];
+            if (!token) {
+                res.status(404).json({ message: "you didn't log in" });
+            }
+            req.headers["authorization"] = "";
+            res.status(200).json({ message: "logout succesfully", details: true });
         }
-        req.headers["authorization"] = "";
-        res.status(200).json({ message: "logout succesfully", details: true });
+        catch (error) {
+            res.status(500).json({ message: "internal server error", details: false });
+        }
     }
 }
 exports.default = sessionController;

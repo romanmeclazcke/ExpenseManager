@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const incomeController_1 = __importDefault(require("../controllers/incomeController"));
-const express_1 = require("express");
 const authJWT_1 = require("../middlewares/authJWT");
+const express_1 = require("express");
 const routerIncome = (0, express_1.Router)();
 const incomecontroller = new incomeController_1.default();
 const path = "/income";

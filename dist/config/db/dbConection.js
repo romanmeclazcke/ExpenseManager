@@ -20,7 +20,7 @@ const syncDatabase = async () => {
         console.log('Base de datos y modelos sincronizados correctamente.');
     }
     catch (error) {
-        console.error('Error al sincronizar la base de datos:', error);
+        throw new Error("Error al sincronizar las bases de datos" + error);
     }
 };
 exports.syncDatabase = syncDatabase;

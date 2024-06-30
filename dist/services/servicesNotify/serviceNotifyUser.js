@@ -2,10 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendEmail = void 0;
 const servisNotifyUser_1 = require("../../config/db/servisNotifyUser");
+const getNameMonth_1 = require("../../utils/getNameMonth");
 const sendEmail = async (userEmail, userName, dataDebt) => {
     try {
         const dueDate = new Date(dataDebt.dueDate);
-        const formattedDueDate = `${dueDate.getDate()} ${getMonthName(dueDate.getMonth())} ${dueDate.getFullYear()}`; //FORMATEO DE LA FECHA
+        const formattedDueDate = `${dueDate.getDate()} ${(0, getNameMonth_1.getMonthName)(dueDate.getMonth())} ${dueDate.getFullYear()}`; //FORMATEO DE LA FECHA
         const mailData = {
             from: process.env.EMAILNOTIFY,
             to: userEmail,
@@ -67,20 +68,3 @@ const sendEmail = async (userEmail, userName, dataDebt) => {
     }
 };
 exports.sendEmail = sendEmail;
-function getMonthName(month) {
-    const meses = [
-        "Enero",
-        "Febrero",
-        "Marzo",
-        "Abril",
-        "Mayo",
-        "Junio",
-        "Julio",
-        "Agosto",
-        "Septiembre",
-        "Octubre",
-        "Noviembre",
-        "Diciembre",
-    ];
-    return meses[month];
-}

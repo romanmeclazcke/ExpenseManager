@@ -106,8 +106,8 @@ class incomeController {
                     [dbConection_1.sequelize.fn('SUM', dbConection_1.sequelize.col('amount')), 'total'],
                 ],
                 group: ['month'],
+                order: ['month']
             });
-            console.log(incomesByMonth);
             if (incomesByMonth) {
                 res.status(200).json({ data: incomesByMonth, details: true });
             }
