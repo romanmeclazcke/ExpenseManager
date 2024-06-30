@@ -118,6 +118,7 @@ class incomeController {
           [sequelize.fn('SUM', sequelize.col('amount')), 'total'],
         ],
         group: ['month'],
+        order:['month']
       });
   
       if (incomesByMonth) {
