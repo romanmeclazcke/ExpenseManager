@@ -55,24 +55,24 @@ class summaryController {
         throw new Error("you most be logged");
       }
 
-      const expenses: any = await Expense.findAll({
+      const expenses: any[] = await Expense.findAll({
         attributes: [
-          [sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m-01'), 'month'],
+          [sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m'), 'month'],
           [sequelize.fn('SUM', sequelize.col('price')), 'total'],
         ],
         where: { idUser: dataUser.id },
-        group: [sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m-01')],
+        group: [sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m')],
         order: [[sequelize.literal('month'), 'ASC']],
       });
-  
-      // Consulta para obtener los ingresos agrupados por mes (ajustar según tu modelo de ingresos)
-      const incomes: any = await Income.findAll({
+
+      // Consulta para obtener los ingresos agrupados por mes
+      const incomes: any[] = await Income.findAll({
         attributes: [
-          [sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m-01'), 'month'],
+          [sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m'), 'month'],
           [sequelize.fn('SUM', sequelize.col('price')), 'total'],
         ],
         where: { idUser: dataUser.id },
-        group: [sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m-01')],
+        group: [sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m')],
         order: [[sequelize.literal('month'), 'ASC']],
       });
 
