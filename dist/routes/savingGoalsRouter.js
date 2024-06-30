@@ -10,7 +10,6 @@ const routerSavingGoals = (0, express_1.Router)();
 const savingcontroller = new savingsGoalsController_1.default();
 const path = "/goals";
 routerSavingGoals.get(`${path}/all`, authJWT_1.verifySession, (req, res) => {
-    console.log("hola");
     savingcontroller.getSavingGoals(req, res);
 });
 routerSavingGoals.get(`${path}/:id`, authJWT_1.verifySession, (req, res) => {

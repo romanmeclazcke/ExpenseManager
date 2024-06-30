@@ -35,7 +35,6 @@ class summaryController {
             }
 
         } catch (error) {
-            console.error("Error in generateSummaryExpenseAndIncome:", error);
             res.status(500).json({ message: "Internal server error", details: false });
         }
     }

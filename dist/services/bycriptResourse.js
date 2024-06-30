@@ -11,7 +11,7 @@ const encryptPassword = async (password) => {
         return hashPassword;
     }
     catch (err) {
-        console.log(err);
+        throw new Error('Error al encriptar la contraseña');
     }
 };
 exports.encryptPassword = encryptPassword;
@@ -21,8 +21,7 @@ const verifyPasswordSecurity = async (plainPassword, hashedPassword) => {
         return match;
     }
     catch (error) {
-        console.error("Error al comparar contraseñas:", error);
-        throw error;
+        throw new Error('Error al verificar la contraseña.');
     }
 };
 exports.verifyPasswordSecurity = verifyPasswordSecurity;

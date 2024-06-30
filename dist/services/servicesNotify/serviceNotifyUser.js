@@ -59,11 +59,11 @@ const sendEmail = async (userEmail, userName, dataDebt) => {
             if (!error) {
                 return console.log("Email enviado con éxito:", info.response);
             }
-            return console.log("Error al enviar el email");
+            throw new Error('Error al enviar email: ' + error.name);
         });
     }
     catch (error) {
-        console.error("Error en sendEmail:", error);
+        throw new Error('Error al enviar email: ' + error);
     }
 };
 exports.sendEmail = sendEmail;

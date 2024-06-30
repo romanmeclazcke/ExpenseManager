@@ -62,9 +62,9 @@ app.use(routerSavingGoals);
 syncDatabase();
 
 
-// cron.schedule('*/15 * * * * *', () => {
-//     workerDebtsNotify.postMessage('SendNotify')
-// });
+ cron.schedule('*/15 * * * * *', () => {
+     workerDebtsNotify.postMessage('SendNotify')
+ });
 
 
 const bootstrap = () => {

@@ -2,6 +2,6 @@ export const calculatePercentage = async (ultimateGoal : number, currentAmount:n
   try {
     return Math.trunc((currentAmount/ultimateGoal)*100);
   } catch (error) {
-    console.log(error)
+    throw new Error('Error al calcular el porcentaje actual de la meta');
   }   
 }

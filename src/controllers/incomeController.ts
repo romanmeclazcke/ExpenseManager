@@ -120,8 +120,6 @@ class incomeController {
         group: ['month'],
       });
   
-      console.log(incomesByMonth);
-  
       if (incomesByMonth) {
         res.status(200).json({ data: incomesByMonth, details: true });
       } else {
