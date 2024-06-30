@@ -1,4 +1,5 @@
 import { transporter } from "../../config/db/servisNotifyUser";
+import { getMonthName } from "../../utils/getNameMonth";
 
 export const sendEmail = async (userEmail: string,userName: string,dataDebt: any) => {
   try {
@@ -66,20 +67,3 @@ export const sendEmail = async (userEmail: string,userName: string,dataDebt: any
   }
 };
 
-function getMonthName(month: any) {
-  const meses = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
-  return meses[month];
-}
