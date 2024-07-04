@@ -10,7 +10,7 @@ Se podrian realizar distintas acciones que se veran a lo largo de la documentaci
 #### Login :
 Loguearse en la apliacacion para poder hacer uso de todas las funcionalidades.
  
-```
+```http
   POST /session/login
 ```
 
@@ -71,7 +71,7 @@ Este endpoint permite crear un nuevo usuario.
 "password": "LautaroPerez123"
 }
 ```
----
+----
 #### Edit Password:
 Este endpoint te permite cambiar la contraseña en caso de que el usuario la desee cambiar.
 
@@ -94,7 +94,7 @@ Este endpoint te permite cambiar la contraseña en caso de que el usuario la des
 "confirmNewPassword": "LautraoPerez1234?_",
 }
 ```
----
+----
 ### Categorias
 
 #### Get categorys :
@@ -109,7 +109,8 @@ Se debera estar logueado para acceder a esta funcionaldiad.
 ```http
   GET /category/all
 ```
- ---
+
+ ----
  #### Create category:
 Este endpoint te permite crear una nueva categoria asociada a un usuario.
 Se debera proporcionar el token entregado al loguearse.
@@ -131,6 +132,7 @@ Se debera proporcionar el token entregado al loguearse.
 }
 ```
 
+----
 
 #### Get categorys :
 Este endpoint permite obtener todas las categorias de un usario   en particular. 
@@ -157,7 +159,7 @@ Se debera proporcionar el token entregado al loguearse.
 - Authorization: Bearer <tu_token_de_autorización>
 
 
----
+----
  #### Edit category:
 Este endpoint te permite editar una  categoria previamente creada.
 Se debera proporcionar el token entregado al loguearse.
