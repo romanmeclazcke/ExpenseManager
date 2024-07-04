@@ -20,18 +20,18 @@ class servicesNotify{
           model: User,
           as: 'User',
           required: true, // esto es para hacer un inner join
-          attributes: ['name', 'email'] // selecciona solo los atributos que necesitas de la tabla User
+          attributes: ['name', 'email'] // selecciono solo los atributos que necesito de la tabla User
         }]
       });
       
-      this.iteratAndSendEmail(debts);
-
+      this.iterateAndSendEmail(debts);
+      
     } catch (error) {
       throw new Error('Error al obtener las deudas proximas a vencer');
     }
   };
 
-  async iteratAndSendEmail(debts:Debts[]){
+  async iterateAndSendEmail(debts:Debts[]){
     try{
       debts.forEach(async (debt) => {
         const userEmail = debt.User.dataValues.email;

@@ -17,7 +17,7 @@ class summaryController {
       const incomes = await Income.findAll({
         where: {
           idUser: dataUser.id,
-        },
+      },
       });
 
       const expenses = await Expense.findAll({
@@ -80,7 +80,7 @@ class summaryController {
       for (let i = 0; i < 12; i++) {
         const month: ExpenseAndIncomeByMonth = {
           month: getMonthName(i),
-          expensesAmount: expenses[i] || 0,
+          expensesAmount: expenses[i] || 0, //revisar error porque agrupa mal los datos
           incomesAmount: incomes[i] || 0,
         };
 
