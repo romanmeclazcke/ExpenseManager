@@ -59,12 +59,12 @@ app.use(routerCategory);
 app.use(routerDebts);
 app.use(routerSummary)
 app.use(routerSavingGoals);
-syncDatabase();
+ 
 
 
-//  cron.schedule('*/15 * * * * *', () => {
-//      workerDebtsNotify.postMessage('SendNotify')
-//  });
+  cron.schedule('* * */1 * *', () => {
+      workerDebtsNotify.postMessage('SendNotify')
+  });
 
 
 const bootstrap = () => {
