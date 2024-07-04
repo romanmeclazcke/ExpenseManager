@@ -10,7 +10,7 @@ Se podrian realizar distintas acciones que se veran a lo largo de la documentaci
 #### Login :
 Loguearse en la apliacacion para poder hacer uso de todas las funcionalidades.
  
-```http
+```
   POST /session/login
 ```
 
