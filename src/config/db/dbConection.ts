@@ -1,4 +1,4 @@
-import { Sequelize } from "sequelize";
+import { Sequelize, Op } from "sequelize";
 import { config } from "dotenv";
 config()
 
@@ -22,5 +22,7 @@ export const syncDatabase = async () => {
     throw new Error("Error al sincronizar las bases de datos"+ error);
   }
 };
+
+export {Op}
 
 
