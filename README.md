@@ -76,6 +76,8 @@ Este endpoint permite crear un nuevo usuario.
 Este endpoint te permite cambiar la contraseña en caso de que el usuario la desee cambiar.
 Se debera proporcionar recibido al loguearse.
 
+Authorization: Bearer <tu_token_de_autorización>
+
 ```http
   PATCH /user/editpassword
 ```
