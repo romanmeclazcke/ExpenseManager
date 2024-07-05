@@ -74,6 +74,7 @@ Este endpoint permite crear un nuevo usuario.
 ----
 #### Edit Password:
 Este endpoint te permite cambiar la contraseña en caso de que el usuario la desee cambiar.
+Se debera proporcionar recibido al loguearse.
 
 ```http
   PATCH /user/editpassword
