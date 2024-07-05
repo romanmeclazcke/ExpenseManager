@@ -12,13 +12,13 @@ routerSummary.get(
  `${path}/all`,verifySession,(req:Request,res:Response)=>{
         summarycontroller.generateSummaryExpenseAndIncome(req,res);
     }
-)
+);
 
 routerSummary.get(
     `${path}/total/bymonth`,verifySession,(req:Request,res:Response)=>{
            summarycontroller.getSummaryByMonths(req,res);
        }
-)
+);
 
 
 

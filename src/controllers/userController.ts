@@ -25,6 +25,7 @@ class UserController {
       if (existingUser) {
         return res.status(400).json({ message: "User already exists", details: false });
       }
+      
   
       // Encriptar la contraseña antes de guardarla en la base de datos
       const hashedPassword = await encryptPassword(password);

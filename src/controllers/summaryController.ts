@@ -26,19 +26,29 @@ class SummaryController {
         },
       });
 
+      const sumIncomes= await Income.sum('price',{
+        where:{
+          idUser: dataUser.id,
+        }
+      })
+
+      const sumExpense= await Expense.sum('price',{
+        where:{
+          idUser: dataUser.id,
+        }
+      })
+      
+
       const response = {
+        total: sumIncomes-sumExpense,
+        sumIncomes: sumIncomes||0,
+        sumExpense: sumExpense||0,
         incomes: incomes,
-        expenses: expenses,
+        expenses: expenses
       };
 
-      if (incomes.length > 0 || expenses.length > 0) {
-        res.status(200).json({ message: response, details: true });
-      } else {
-        res.status(404).json({
-          message: "User hasn't incomes and expenses",
-          details: false,
-        });
-      }
+      res.status(200).json({ message: response, details: true });
+
     } catch (error) {
       res.status(500).json({ message: 'Internal server error', details: false });
     }

@@ -7,7 +7,7 @@ class servicesNotify{
   async getDebtsDueWithinWeek(){
     try {
       const oneWeekFromNow = new Date();
-      oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7); // Fecha 7 días a partir de ahora
+      oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);
      
       const debts = await Debts.findAll({
         where: {
@@ -19,8 +19,8 @@ class servicesNotify{
         include: [{
           model: User,
           as: 'User',
-          required: true, // esto es para hacer un inner join
-          attributes: ['name', 'email'] // selecciono solo los atributos que necesito de la tabla User
+          required: true, 
+          attributes: ['name', 'email'] 
         }]
       });
       
