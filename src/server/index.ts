@@ -30,7 +30,7 @@ declare module "express-session" {
 
 const workerDebtsNotify = new Worker('./dist/workers/workerNotify.js');
 
-
+syncDatabase();
 dotenv.config();
 const PORT = process.env.PORT;
 const app = express();

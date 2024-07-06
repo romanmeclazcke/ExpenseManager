@@ -8,7 +8,7 @@ class categoryController {
       const dataUser = req.session.user
       
       if(!dataUser || !dataUser.id){
-        return
+        return res.status(401).json({ message: 'Unauthorized' });
       }
 
       const categories  = await Category.findAll({
@@ -39,9 +39,7 @@ class categoryController {
 
 
       if (!dataUser || !name) {
-        return res
-          .status(404)
-          .json({ message: "complete all camps", details: false });
+        return res.status(401).json({ message: 'Unauthorized' });
       }
 
       if(!dataUser.id){
@@ -70,7 +68,7 @@ class categoryController {
       const dataUser = req.session.user;
 
       if(!dataUser || dataUser.id){
-        return
+        return res.status(401).json({ message: 'Unauthorized' });
       }
 
 
@@ -117,7 +115,7 @@ class categoryController {
       const dataUser= req.session.user;
 
       if(!dataUser || dataUser.id){
-        return
+        return res.status(401).json({ message: 'Unauthorized' });
       }
 
       const category = await Category.findAll({

@@ -71,7 +71,7 @@ class SummaryController {
       const dataUser = req.session.user;
 
       if (!dataUser || !dataUser.id) {
-        throw new Error('You must be logged in');
+        return res.status(401).json({ message: "Unauthorized" });
       }
 
       // Obtener el año actual

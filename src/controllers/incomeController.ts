@@ -9,8 +9,8 @@ class incomeController {
     try {
       const dataUser = req.session.user;
 
-      if(!dataUser || !dataUser.id){
-        return
+      if (!dataUser || !dataUser.id) {
+        return res.status(401).json({ message: "Unauthorized" });
       }
 
       const validFields = ["price", "date", "categoryId"]; // Campos válidos para ordenar
@@ -46,8 +46,8 @@ class incomeController {
       const { idCategory } = req.params;
       const dataUser = req.session.user;
 
-      if(!dataUser || !dataUser.id){
-        return
+      if (!dataUser || !dataUser.id) {
+        return res.status(401).json({ message: "Unauthorized" });
       }
 
       const existCategory = await Category.findAll({
@@ -85,8 +85,8 @@ class incomeController {
       const { id } = req.params;
       const dataUser = req.session.user;
 
-      if(!dataUser || !dataUser.id){
-        return
+      if (!dataUser || !dataUser.id) {
+        return res.status(401).json({ message: "Unauthorized" });
       }
 
       const income = await Income.findAll({
@@ -136,8 +136,8 @@ class incomeController {
       const { price, date, description, idCategory } = req.body;
       const dataUser = req.session.user;
 
-      if(!dataUser || !dataUser.id){
-        return
+      if (!dataUser || !dataUser.id) {
+        return res.status(401).json({ message: "Unauthorized" });
       }
 
       const data = {
@@ -166,8 +166,8 @@ class incomeController {
       const { id } = req.params;
       const dataUser = req.session.user;
 
-      if(!dataUser || !dataUser.id){
-        return
+      if (!dataUser || !dataUser.id) {
+        return res.status(401).json({ message: "Unauthorized" });
       }
      
 
@@ -193,8 +193,8 @@ class incomeController {
       const { price, date, description, idCategory } = req.body;
       const dataUser = req.session.user;
 
-      if(!dataUser || !dataUser.id){
-        return
+      if (!dataUser || !dataUser.id) {
+        return res.status(401).json({ message: "Unauthorized" });
       }
       
       const updated = await Income.update(

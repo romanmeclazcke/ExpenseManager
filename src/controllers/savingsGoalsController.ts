@@ -50,7 +50,7 @@ class SavingGoalsController {
       const dataUser = req.session.user;
 
       if (!dataUser || !dataUser.id) {
-        return;
+        return res.status(401).json({ message: "Unauthorized" });
       }
 
       const goal = await SavingGoals.findAll({
@@ -91,7 +91,7 @@ class SavingGoalsController {
       const dataUser = req.session.user;
 
       if (!dataUser || !dataUser.id) {
-        return;
+        return res.status(401).json({ message: "Unauthorized" });
       }
 
       const data = {
@@ -120,7 +120,7 @@ class SavingGoalsController {
       const dataUser = req.session.user;
 
       if (!dataUser || !dataUser.id) {
-        return;
+        return res.status(401).json({ message: "Unauthorized" });
       }
 
       const canDelete = await SavingGoals.destroy({
@@ -144,7 +144,7 @@ class SavingGoalsController {
       const dataUser = req.session.user;
 
       if (!dataUser || !dataUser.id) {
-        return;
+        return res.status(401).json({ message: "Unauthorized" });
       }
 
       const updated = await SavingGoals.update(
@@ -181,7 +181,7 @@ class SavingGoalsController {
       const dataUser = req.session.user;
 
       if (!dataUser || !dataUser.id) {
-        return;
+        return res.status(401).json({ message: "Unauthorized" });
       }
 
       const goal = await SavingGoals.findOne(
