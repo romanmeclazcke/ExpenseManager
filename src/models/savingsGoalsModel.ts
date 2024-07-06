@@ -4,7 +4,7 @@ import User from "./userModel";
 
 
 class SavingGoals extends Model {
-    declare id: number
+    declare id: string
     declare idUser :number
     declare name:string
     declare endDate: Date
@@ -14,13 +14,12 @@ class SavingGoals extends Model {
 
 SavingGoals.init({
     id:{
-        type: DataTypes.INTEGER,
-        autoIncrement:true,
-        allowNull:false,
-        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true 
     },
     idUser: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
     },
     name: {

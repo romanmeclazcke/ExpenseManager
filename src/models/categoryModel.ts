@@ -8,14 +8,13 @@ class Category extends Model{
 }
 
  Category.init({
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
+    id:{
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true 
     },
     idUser: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
     },
     name: {
@@ -27,10 +26,10 @@ class Category extends Model{
     modelName: "Category"
 });
 
-// Category.belongsTo(User, {
-//     foreignKey: 'idUser', // Nombre del campo en Category que referencia al id en User
-//     targetKey: 'id', // Campo de User al que hace referencia idUser
-// });
+Category.belongsTo(User, {
+     foreignKey: 'idUser', // Nombre del campo en Category que referencia al id en User
+     targetKey: 'id', // Campo de User al que hace referencia idUser
+ });
     
 
 export default Category;

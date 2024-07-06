@@ -3,19 +3,19 @@ import { sequelize } from "../config/db/dbConection";
 import User from "./userModel";
 
 
+
 class Debts extends Model{
     declare User: User;
 }
 
 Debts.init({
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
+    id:{
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true 
     },
     idUser: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
     },
     name: {
@@ -40,6 +40,11 @@ Debts.init({
     modelName: 'Debts',
 })
 
-Debts.belongsTo(User, { as: 'User', foreignKey: 'idUser' });
+Debts.belongsTo(User, {
+    foreignKey: 'idUser', // Nombre del campo en Category que referencia al id en User
+    targetKey: 'id', // Campo de User al que hace referencia idUser
+});
+
+
 
 export default Debts;

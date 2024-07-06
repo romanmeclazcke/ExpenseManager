@@ -1,20 +1,18 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/db/dbConection";
 import User from "./userModel";
-import Expense from "./expenseModel";
 import Category from "./categoryModel";
 
 class Income extends Model {}
 
 Income.init({
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
+    id:{
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true 
     },
     idUser: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false
     },
     price: {
@@ -29,8 +27,8 @@ Income.init({
         type: DataTypes.STRING,
         allowNull: false
     },
-    category: {
-        type: DataTypes.INTEGER,
+    idCategory: {
+        type: DataTypes.UUID,
         allowNull: false
     }
 },{
@@ -38,14 +36,13 @@ Income.init({
     modelName: "Income"
 });
 
-// Expense.belongsTo(User, {
-//     foreignKey: 'idUser', // Nombre del campo en Category que referencia al id en User
-//     targetKey: 'id', // Campo de User al que hace referencia idUser
-// });
-
-// Expense.belongsTo(Category, {
-//     foreignKey: 'category', // Nombre del campo en Category que referencia al al idCategory
-//     targetKey: 'id', // Campo de Category al que hace referencia 
-// });
-
+Income.belongsTo(User, {
+    foreignKey: 'idUser', // Nombre del campo en Category que referencia al id en User
+      targetKey: 'id', // Campo de User al que hace referencia idUser
+  });
+ 
+  Income.belongsTo(Category, {
+      foreignKey: 'idCategory', // Nombre del campo en Category que referencia al al idCategory
+      targetKey: 'id', // Campo de Category al que hace referencia 
+  });
  export default Income;
