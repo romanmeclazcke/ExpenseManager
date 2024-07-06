@@ -54,6 +54,7 @@ export const sendEmail = async (userEmail: string,userName: string,dataDebt: any
               </tbody>
             </table>
           </body>`,
+          
     };
 
     transporter.sendMail(mailData, (error, info) => {

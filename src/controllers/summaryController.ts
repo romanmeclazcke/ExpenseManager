@@ -4,55 +4,67 @@ import Expense from '../models/expenseModel';
 import { ExpenseAndIncomeByMonth } from '../interface/ExpenseAndIncomeByMonth';
 import { getMonthName } from '../utils/getNameMonth';
 import { sequelize, Op } from '../config/db/dbConection';
+import { getPriceDolar } from '../utils/priceDolar';
+
 
 class SummaryController {
   async generateSummaryExpenseAndIncome(req: Request, res: Response) {
     try {
       const dataUser = req.session.user;
-
+  
       if (!dataUser || !dataUser.id) {
         return res.status(401).json({ message: 'Unauthorized' });
       }
-
-      const incomes = await Income.findAll({
-        where: {
-          idUser: dataUser.id,
-        },
-      });
-
-      const expenses = await Expense.findAll({
-        where: {
-          idUser: dataUser.id,
-        },
-      });
-
-      const sumIncomes= await Income.sum('price',{
-        where:{
-          idUser: dataUser.id,
-        }
-      })
-
-      const sumExpense= await Expense.sum('price',{
-        where:{
-          idUser: dataUser.id,
-        }
-      })
-      
-
+  
+      // Obtengo los gastos en ingresos en paralelo para que sea mas rapido
+      const [incomes, expenses] = await Promise.all([
+        Income.findAll({
+          where: {
+            idUser: dataUser.id,
+          },
+        }),
+        Expense.findAll({
+          where: {
+            idUser: dataUser.id,
+          },
+        }),
+      ]);
+  
+      // Calculo la sumas en paralelo, para que los procesos sean mas rapidos
+      const [sumIncomes, sumExpense] = await Promise.all([
+        Income.sum('price', {
+          where: {
+            idUser: dataUser.id,
+          },
+        }),
+        Expense.sum('price', {
+          where: {
+            idUser: dataUser.id,
+          },
+        }),
+      ]);
+  
+      const total = sumIncomes - sumExpense;
+      const priceDolar = await getPriceDolar();
+  
       const response = {
-        total: sumIncomes-sumExpense,
-        sumIncomes: sumIncomes||0,
-        sumExpense: sumExpense||0,
+        totalPesos: total,
+        totalDolarBlue: parseFloat((total / priceDolar).toFixed(2)),
+        sumIncomesPesos: sumIncomes || 0,
+        sumIncomesDolarBlue: parseFloat((sumIncomes / priceDolar).toFixed(2))|| 0,
+        sumExpensePesos: sumExpense || 0,
+        sumExpenseDolarBlue: parseFloat((sumExpense/priceDolar).toFixed(2))|| 0,
         incomes: incomes,
-        expenses: expenses
+        expenses: expenses,
       };
-
+  
       res.status(200).json({ message: response, details: true });
-
+  
     } catch (error) {
       res.status(500).json({ message: 'Internal server error', details: false });
     }
   }
+  
 
   async getSummaryByMonths(req: Request, res: Response) {
     try {
