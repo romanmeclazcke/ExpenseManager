@@ -7,7 +7,6 @@ class categoryController {
     try {
       const dataUser = req.session.user
       
-
       if(!dataUser || !dataUser.id){
         return
       }

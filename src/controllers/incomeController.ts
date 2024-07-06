@@ -133,7 +133,7 @@ class incomeController {
 
   async createIncome(req: Request, res: Response) {
     try {
-      const { price, date, description, category } = req.body;
+      const { price, date, description, idCategory } = req.body;
       const dataUser = req.session.user;
 
       if(!dataUser || !dataUser.id){
@@ -145,7 +145,7 @@ class incomeController {
         price,
         date,
         description,
-        category,
+        idCategory,
       };
       const created = await Income.create(data);
 
@@ -190,7 +190,7 @@ class incomeController {
   async editIncome(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { price, date, description, category } = req.body;
+      const { price, date, description, idCategory } = req.body;
       const dataUser = req.session.user;
 
       if(!dataUser || !dataUser.id){
@@ -202,7 +202,7 @@ class incomeController {
           price: price,
           date: date,
           description: description,
-          category: category,
+          idCategory: idCategory,
         },
         {
           where: {

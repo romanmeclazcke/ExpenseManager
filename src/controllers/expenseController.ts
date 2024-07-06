@@ -139,7 +139,7 @@ class expenseController {
 
   async createExpense(req: Request, res: Response) {
     try {
-      const { price, date, description, category } = req.body;
+      const { price, date, description, idCategory } = req.body;
       const dataUser = req.session.user;
 
       if(!dataUser || !dataUser.id){
@@ -151,7 +151,7 @@ class expenseController {
         price,
         date,
         description,
-        category,
+        idCategory,
       };
 
       const created = await Expense.create(data);
@@ -162,6 +162,7 @@ class expenseController {
             .status(400)
             .json({ message: "internal server error", details: false });
     } catch (error) {
+      console.log(error)
       res
         .status(400)
         .json({ message: "internal server error", detials: false });
@@ -196,7 +197,7 @@ class expenseController {
   async editExpense(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { price, date, description, category } = req.body;
+      const { price, date, description, idCategory } = req.body;
       const dataUser = req.session.user;
 
       if(!dataUser || !dataUser.id){
@@ -211,7 +212,7 @@ class expenseController {
           price: price,
           date: date,
           description: description,
-          category: category,
+          idCategory: idCategory,
         },
         {
           where: {

@@ -51,7 +51,7 @@ class SummaryController {
         totalPesos: total,
         totalDolarBlue: parseFloat((total / priceDolar).toFixed(2)),
         sumIncomesPesos: sumIncomes || 0,
-        sumIncomesDolarBlue: parseFloat((sumIncomes / priceDolar).toFixed(2))|| 0,
+        sumIncomesDolarBlue: parseFloat((sumIncomes / priceDolar).toFixed(2)) || 0,
         sumExpensePesos: sumExpense || 0,
         sumExpenseDolarBlue: parseFloat((sumExpense/priceDolar).toFixed(2))|| 0,
         incomes: incomes,
