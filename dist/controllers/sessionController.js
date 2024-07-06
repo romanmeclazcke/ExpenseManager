@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const userModel_1 = __importDefault(require("../models/userModel"));
-const bycriptResourse_1 = require("../services/bycriptResourse");
+const bycriptResourse_1 = require("../services/encriptServices/bycriptResourse");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class sessionController {
     async createToken(req, res) {

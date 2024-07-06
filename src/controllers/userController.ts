@@ -2,7 +2,7 @@ import User from "../models/userModel";
 import {
   encryptPassword,
   verifyPasswordSecurity,
-} from "../services/bycriptResourse";
+} from "../services/encriptServices/bycriptResourse";
 import { Request, Response } from "express";
 
 class UserController {

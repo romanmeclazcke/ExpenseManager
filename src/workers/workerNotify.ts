@@ -1,5 +1,5 @@
 import { parentPort } from "worker_threads";
-import servicesNotify from "../services/servicesNotify/serviceDetectUpcomingDebts";
+import servicesNotify from "../services/notifyServices/serviceDetectUpcomingDebts";
 
 const servicesNotifyDebts = new servicesNotify();
 
