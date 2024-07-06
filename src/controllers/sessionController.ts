@@ -1,5 +1,5 @@
 import User from "../models/userModel";
-import { verifyPasswordSecurity } from "../services/encriptServices/bycriptResourse";
+import { verifyPasswordSecurity } from "../services/encryptServices/bycriptResourse";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
