@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import { error } from 'console';
 
 export const encryptPassword= async (password:string)=>{
     try{

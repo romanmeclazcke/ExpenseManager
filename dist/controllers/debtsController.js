@@ -9,7 +9,7 @@ class DebtsController {
         try {
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return res.status(401).json({ message: "User not authenticated", details: false });
+                return res.status(401).json({ message: 'Unauthorized' });
             }
             const { sort, order } = req.query;
             const validFields = ["name", "amount", "dueDate", "description"];
@@ -40,7 +40,7 @@ class DebtsController {
             const { id } = req.params;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: 'Unauthorized' });
             }
             const debt = await debtsModel_1.default.findOne({ where: {
                     id: id,
@@ -59,7 +59,7 @@ class DebtsController {
             const dataUser = req.session.user;
             const { name, amount, dueDate, description } = req.body;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: 'Unauthorized' });
             }
             const data = {
                 idUser: dataUser.id,
@@ -83,7 +83,7 @@ class DebtsController {
             const dataUser = req.session.user;
             const { name, amount, dueDate, description } = req.body;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: 'Unauthorized' });
             }
             const data = {
                 name,
@@ -108,7 +108,7 @@ class DebtsController {
             const { id } = req.params;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: 'Unauthorized' });
             }
             const deleted = await debtsModel_1.default.destroy({ where: {
                     id: id,

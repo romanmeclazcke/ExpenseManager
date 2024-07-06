@@ -46,7 +46,7 @@ class SavingGoalsController {
             const { id } = req.params;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const goal = await savingsGoalsModel_1.default.findAll({
                 where: { id: id, idUser: dataUser.id },
@@ -78,7 +78,7 @@ class SavingGoalsController {
             const { name, endDate, ultimateGoal } = req.body;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const data = {
                 idUser: dataUser.id,
@@ -104,7 +104,7 @@ class SavingGoalsController {
             const { id } = req.params;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const canDelete = await savingsGoalsModel_1.default.destroy({
                 where: { id: id, idUser: dataUser.id },
@@ -125,7 +125,7 @@ class SavingGoalsController {
             const { name, endDate, ultimateGoal } = req.body;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const updated = await savingsGoalsModel_1.default.update({ name: name,
                 endDate: endDate,
@@ -156,7 +156,7 @@ class SavingGoalsController {
             const { amountCurrent } = req.body;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const goal = await savingsGoalsModel_1.default.findOne({
                 where: {

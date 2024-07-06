@@ -9,7 +9,7 @@ const caretoryController_1 = __importDefault(require("../controllers/caretoryCon
 const routerCategory = (0, express_1.Router)();
 const categorycontroller = new caretoryController_1.default();
 const path = "/category";
-routerCategory.get(`${path}/all/:idUser`, authJWT_1.verifySession, (req, res) => {
+routerCategory.get(`${path}/all`, authJWT_1.verifySession, (req, res) => {
     categorycontroller.getCategoryByUser(req, res);
 });
 routerCategory.post(`${path}/new`, authJWT_1.verifySession, (req, res) => {

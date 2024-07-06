@@ -11,29 +11,29 @@ class servicesNotify {
     async getDebtsDueWithinWeek() {
         try {
             const oneWeekFromNow = new Date();
-            oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7); // Fecha 7 días a partir de ahora
+            oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);
             const debts = await debtsModel_1.default.findAll({
                 where: {
                     dueDate: {
-                        [sequelize_1.Op.gt]: new Date(),
-                        [sequelize_1.Op.lt]: oneWeekFromNow,
+                        [sequelize_1.Op.between]: [new Date(), oneWeekFromNow]
                     }
                 },
                 include: [{
                         model: userModel_1.default,
                         as: 'User',
-                        required: true, // esto es para hacer un inner join
-                        attributes: ['name', 'email'] // selecciona solo los atributos que necesitas de la tabla User
+                        required: true,
+                        attributes: ['name', 'email']
                     }]
             });
-            this.iteratAndSendEmail(debts);
+            console.log(debts.length); // Verificar cuántos registros se obtuvieron
+            await this.iterateAndSendEmail(debts); // Esperar a que se envíen todos los correos
         }
         catch (error) {
+            console.error('Error al obtener las deudas proximas a vencer:', error);
             throw new Error('Error al obtener las deudas proximas a vencer');
         }
     }
-    ;
-    async iteratAndSendEmail(debts) {
+    async iterateAndSendEmail(debts) {
         try {
             debts.forEach(async (debt) => {
                 const userEmail = debt.User.dataValues.email;

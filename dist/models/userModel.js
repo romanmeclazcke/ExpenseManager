@@ -6,9 +6,8 @@ class User extends sequelize_1.Model {
 }
 User.init({
     id: {
-        type: sequelize_1.DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
+        type: sequelize_1.DataTypes.UUID,
+        defaultValue: sequelize_1.DataTypes.UUIDV4,
         primaryKey: true
     },
     email: {

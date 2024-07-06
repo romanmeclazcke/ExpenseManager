@@ -4,16 +4,15 @@ import { sendEmail } from "./serviceNotifyUser";
 import User from "../../models/userModel";
 
 class servicesNotify{
-  async getDebtsDueWithinWeek(){
+  async getDebtsDueWithinWeek() {
     try {
       const oneWeekFromNow = new Date();
       oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);
-     
+  
       const debts = await Debts.findAll({
         where: {
           dueDate: {
-            [Op.gt]: new Date(),
-            [Op.lt]: oneWeekFromNow,
+            [Op.between]:[new Date(),oneWeekFromNow]
           }
         },
         include: [{
@@ -23,13 +22,17 @@ class servicesNotify{
           attributes: ['name', 'email'] 
         }]
       });
-      
-      this.iterateAndSendEmail(debts);
-      
+  
+      console.log(debts.length); // Verificar cuántos registros se obtuvieron
+  
+      await this.iterateAndSendEmail(debts); // Esperar a que se envíen todos los correos
+  
     } catch (error) {
+      console.error('Error al obtener las deudas proximas a vencer:', error);
       throw new Error('Error al obtener las deudas proximas a vencer');
     }
-  };
+  }
+  
 
   async iterateAndSendEmail(debts:Debts[]){
     try{

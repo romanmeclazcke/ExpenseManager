@@ -47,7 +47,7 @@ class UserController {
             const { password, newPassword, confirmNewPassword } = req.body;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             if (!newPassword ||
                 !confirmNewPassword ||

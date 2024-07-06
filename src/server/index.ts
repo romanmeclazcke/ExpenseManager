@@ -62,7 +62,7 @@ app.use(routerSavingGoals);
  
 
 
-  cron.schedule('* * */1 * *', () => {
+  cron.schedule('*/10 * * * * *', () => {
       workerDebtsNotify.postMessage('SendNotify')
   });
 

@@ -11,7 +11,7 @@ class incomeController {
         try {
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const validFields = ["price", "date", "categoryId"]; // Campos válidos para ordenar
             const { sort, order } = req.query;
@@ -44,7 +44,7 @@ class incomeController {
             const { idCategory } = req.params;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const existCategory = await categoryModel_1.default.findAll({
                 where: { id: idCategory, idUser: dataUser.id },
@@ -78,7 +78,7 @@ class incomeController {
             const { id } = req.params;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const income = await incomeModel_1.default.findAll({
                 where: { id: id, idUser: dataUser.id },
@@ -121,17 +121,17 @@ class incomeController {
     }
     async createIncome(req, res) {
         try {
-            const { price, date, description, category } = req.body;
+            const { price, date, description, idCategory } = req.body;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const data = {
                 idUser: dataUser.id,
                 price,
                 date,
                 description,
-                category,
+                idCategory,
             };
             const created = await incomeModel_1.default.create(data);
             created
@@ -151,7 +151,7 @@ class incomeController {
             const { id } = req.params;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const candelete = await incomeModel_1.default.destroy({
                 where: { id: id, idUser: dataUser.id },
@@ -171,16 +171,16 @@ class incomeController {
     async editIncome(req, res) {
         try {
             const { id } = req.params;
-            const { price, date, description, category } = req.body;
+            const { price, date, description, idCategory } = req.body;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const updated = await incomeModel_1.default.update({
                 price: price,
                 date: date,
                 description: description,
-                category: category,
+                idCategory: idCategory,
             }, {
                 where: {
                     id: id,

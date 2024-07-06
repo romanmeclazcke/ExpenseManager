@@ -17,7 +17,11 @@ class expenseController {
             const { sort, order } = req.query;
             let orderOption = []; // Definir correctamente el tipo de orderOption
             // Verificar si se proporciona un campo de orden válido y un tipo de orden válido
-            if (sort && order && typeof sort === "string" && typeof order === "string" && validFields.includes(sort)) {
+            if (sort &&
+                order &&
+                typeof sort === "string" &&
+                typeof order === "string" &&
+                validFields.includes(sort)) {
                 orderOption.push([sort, order.toUpperCase()]); //"afirmo que el valor sera ASC O DESC"
             }
             else {
@@ -44,7 +48,7 @@ class expenseController {
             const { idCategory } = req.params;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const existCategory = await categoryModel_1.default.findAll({
                 where: { id: idCategory, idUser: dataUser.id },
@@ -78,7 +82,7 @@ class expenseController {
             const { id } = req.params;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const expense = await expenseModel_1.default.findOne({
                 where: { id: id, idUser: dataUser.id },
@@ -99,17 +103,19 @@ class expenseController {
         try {
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return res.status(401).json({ message: "Unauthorized", details: false });
+                return res
+                    .status(401)
+                    .json({ message: "Unauthorized", details: false });
             }
             res.status(200).json(dataUser.id);
             const expenseByMonths = await expenseModel_1.default.findAll({
                 where: { idUser: dataUser.id },
                 attributes: [
-                    [dbConection_1.sequelize.fn('DATE_TRUNC', 'month', dbConection_1.sequelize.col('date')), 'month'],
-                    [dbConection_1.sequelize.fn('SUM', dbConection_1.sequelize.col('amount')), 'total'],
+                    [dbConection_1.sequelize.fn("DATE_TRUNC", "month", dbConection_1.sequelize.col("date")), "month"],
+                    [dbConection_1.sequelize.fn("SUM", dbConection_1.sequelize.col("amount")), "total"],
                 ],
-                group: ['month'],
-                order: ['month']
+                group: ["month"],
+                order: ["month"],
             });
             if (expenseByMonths) {
                 res.status(200).json({ data: expenseByMonths, details: true });
@@ -119,22 +125,24 @@ class expenseController {
             }
         }
         catch (error) {
-            res.status(400).json({ message: "Internal server error", details: false });
+            res
+                .status(400)
+                .json({ message: "Internal server error", details: false });
         }
     }
     async createExpense(req, res) {
         try {
-            const { price, date, description, category } = req.body;
+            const { price, date, description, idCategory } = req.body;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const data = {
                 idUser: dataUser.id,
                 price,
                 date,
                 description,
-                category,
+                idCategory,
             };
             const created = await expenseModel_1.default.create(data);
             created
@@ -144,6 +152,7 @@ class expenseController {
                     .json({ message: "internal server error", details: false });
         }
         catch (error) {
+            console.log(error);
             res
                 .status(400)
                 .json({ message: "internal server error", detials: false });
@@ -154,7 +163,7 @@ class expenseController {
             const { id } = req.params;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             const candelete = await expenseModel_1.default.destroy({
                 where: { id: id, idUser: dataUser.id },
@@ -174,17 +183,17 @@ class expenseController {
     async editExpense(req, res) {
         try {
             const { id } = req.params;
-            const { price, date, description, category } = req.body;
+            const { price, date, description, idCategory } = req.body;
             const dataUser = req.session.user;
             if (!dataUser || !dataUser.id) {
-                return;
+                return res.status(401).json({ message: "Unauthorized" });
             }
             // Actualizar los datos del gasto
             const updated = await expenseModel_1.default.update({
                 price: price,
                 date: date,
                 description: description,
-                category: category,
+                idCategory: idCategory,
             }, {
                 where: {
                     id: id,

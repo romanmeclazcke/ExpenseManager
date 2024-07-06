@@ -10,13 +10,12 @@ class Debts extends sequelize_1.Model {
 }
 Debts.init({
     id: {
-        type: sequelize_1.DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
+        type: sequelize_1.DataTypes.UUID,
+        defaultValue: sequelize_1.DataTypes.UUIDV4,
         primaryKey: true
     },
     idUser: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.UUID,
         allowNull: false
     },
     name: {
@@ -39,5 +38,8 @@ Debts.init({
     sequelize: dbConection_1.sequelize,
     modelName: 'Debts',
 });
-Debts.belongsTo(userModel_1.default, { as: 'User', foreignKey: 'idUser' });
+Debts.belongsTo(userModel_1.default, {
+    foreignKey: 'idUser', // Nombre del campo en Category que referencia al id en User
+    targetKey: 'id', // Campo de User al que hace referencia idUser
+});
 exports.default = Debts;
