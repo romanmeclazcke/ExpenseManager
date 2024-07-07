@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendEmail = void 0;
-const servisNotifyUser_1 = require("../../config/db/servisNotifyUser");
+const nodemailerConection_1 = require("../../config/nodemailer/nodemailerConection");
 const getNameMonth_1 = require("../../utils/getNameMonth");
 const sendEmail = async (userEmail, userName, dataDebt) => {
     try {
@@ -56,7 +56,7 @@ const sendEmail = async (userEmail, userName, dataDebt) => {
             </table>
           </body>`,
         };
-        servisNotifyUser_1.transporter.sendMail(mailData, (error, info) => {
+        nodemailerConection_1.transporter.sendMail(mailData, (error, info) => {
             if (!error) {
                 return console.log("Email enviado con éxito:", info.response);
             }

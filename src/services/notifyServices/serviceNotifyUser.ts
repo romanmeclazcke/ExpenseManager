@@ -1,4 +1,4 @@
-import { transporter } from "../../config/db/servisNotifyUser";
+import { transporter } from "../../config/nodemailer/nodemailerConection";
 import { getMonthName } from "../../utils/getNameMonth";
 
 export const sendEmail = async (userEmail: string,userName: string,dataDebt: any) => {
