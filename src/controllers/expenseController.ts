@@ -50,6 +50,7 @@ class expenseController {
     try {
       const { idCategory } = req.params;
       const dataUser = req.session.user;
+      console.log(idCategory);
 
       if (!dataUser || !dataUser.id) {
         return res.status(401).json({ message: "Unauthorized" });
@@ -68,7 +69,7 @@ class expenseController {
       const expenseByCategory = await Expense.findAll({
         where: {
           idUser: dataUser.id,
-          category: idCategory,
+          idCategory: idCategory,
         },
       });
 
@@ -127,7 +128,7 @@ class expenseController {
           [sequelize.fn("SUM", sequelize.col("amount")), "total"],
         ],
         group: ["month"] ,
-        order: ["month"],
+        order:[["month","ASC"]],
       });
 
       if (expenseByMonths) {
