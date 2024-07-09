@@ -1,4 +1,4 @@
-import { sequelize } from "../config/db/dbConection";
+import { Op, sequelize } from "../config/db/dbConection";
 import Category from "../models/categoryModel";
 import Expense from "../models/expenseModel";
 import { Request, Response } from "express";
@@ -110,39 +110,48 @@ class expenseController {
     }
   }
 
-  async getExpenseByMonths(req: Request, res: Response) {
+  async  getExpenseByMonths(req: Request, res: Response) {
     try {
       const dataUser = req.session.user;
-
+  
+      // Verifica si el usuario está autenticado
       if (!dataUser || !dataUser.id) {
-        return res
-          .status(401)
-          .json({ message: "Unauthorized", details: false });
+        return res.status(401).json({ message: "Unauthorized", details: false });
       }
-      res.status(200).json(dataUser.id);
-
+      
+      // Obtener el año actual
+      const currentYear = new Date().getFullYear();
+      
+      // Consulta para obtener los gastos agrupados por mes y año del año actual
       const expenseByMonths = await Expense.findAll({
-        where: { idUser: dataUser.id },
+        where: {
+          idUser: dataUser.id,
+          // Filtrar por el año actual
+          date: {
+            [Op.between]: [`${currentYear}-01-01`, `${currentYear}-12-31`]
+          }
+        },
         attributes: [
-          [sequelize.fn("DATE_TRUNC", "month", sequelize.col("date")), "month"],
-          [sequelize.fn("SUM", sequelize.col("amount")), "total"],
+          [sequelize.fn('YEAR', sequelize.col('date')), 'year'], // Obtener el año de la fecha
+          [sequelize.fn('MONTH', sequelize.col('date')), 'month'], // Obtener el mes de la fecha
+          [sequelize.fn('SUM', sequelize.col('price')), 'total'] // Sumarizar el precio
         ],
-        group: ["month"] ,
-        order:[["month","ASC"]],
+        group: ['year', 'month'], // Agrupar por año y mes
+        order: [['year', 'ASC'], ['month', 'ASC']] // Ordenar por año y mes ascendente
       });
-
-      if (expenseByMonths) {
+  
+      // Verifica si se encontraron gastos
+      if (expenseByMonths.length > 0) {
         res.status(200).json({ data: expenseByMonths, details: true });
       } else {
-        res.status(404).json({ message: "Expense not found", details: false });
+        res.status(404).json({ message: "Expenses not found", details: false });
       }
     } catch (error) {
-      res
-        .status(400)
-        .json({ message: "Internal server error", details: false });
+      console.error("Error fetching expenses by month:", error);
+      res.status(500).json({ message: "Internal server error", details: false });
     }
   }
-
+  
   async createExpense(req: Request, res: Response) {
     try {
       const { price, date, description, idCategory } = req.body;

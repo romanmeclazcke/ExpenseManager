@@ -20,7 +20,7 @@ routerExpense.get(`${path}/category/:idCategory`, verifySession,(req:Request,res
   expensecontroller.getExpenseByCategory(req, res);
 });
 
-routerExpense.get(`${path}/summary`, verifySession,(req:Request,res:Response) => {
+routerExpense.get(`${path}/summary/month`, verifySession,(req:Request,res:Response) => {
   expensecontroller.getExpenseByMonths(req, res);
 });
 
