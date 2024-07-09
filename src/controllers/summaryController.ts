@@ -17,7 +17,7 @@ class SummaryController {
       }
   
       // Obtengo los gastos en ingresos en paralelo para que sea mas rapido
-      const [incomes, expenses] = await Promise.all([
+      const [incomes,expenses, sumIncomes,sumExpense] = await Promise.all([
         Income.findAll({
           where: {
             idUser: dataUser.id,
@@ -28,10 +28,7 @@ class SummaryController {
             idUser: dataUser.id,
           },
         }),
-      ]);
-  
-      // Calculo la sumas en paralelo, para que los procesos sean mas rapidos
-      const [sumIncomes, sumExpense] = await Promise.all([
+
         Income.sum('price', {
           where: {
             idUser: dataUser.id,
@@ -43,6 +40,7 @@ class SummaryController {
           },
         }),
       ]);
+      
   
       const total = sumIncomes - sumExpense;
       const priceDolar = await getPriceDolar();
@@ -92,7 +90,7 @@ class SummaryController {
         group: [sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m')],
         order: [["month", 'ASC']],
       });
-
+      console.log("pase")
       // Consulta para obtener los ingresos agrupados por mes del año actual
       const incomes: any[] = await Income.findAll({
         attributes: [

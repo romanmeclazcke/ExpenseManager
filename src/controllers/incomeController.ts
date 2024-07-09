@@ -103,7 +103,7 @@ class incomeController {
     }
   }
 
-  async  getExpenseByMonths(req: Request, res: Response) {
+  async  getIncomeByMonths(req: Request, res: Response) {
     try {
       const dataUser = req.session.user;
   
