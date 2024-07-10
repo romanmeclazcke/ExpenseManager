@@ -55,15 +55,20 @@ class sessionController {
 
   async logout(req: Request, res: Response) {
    try {
-     const token = req.headers["authorization"];
+     const token = req.session.user;
  
      if (!token) {
        res.status(404).json({ message: "you didn't log in" });
      }
  
-     req.headers["authorization"] = "";
- 
-     res.status(200).json({ message: "logout succesfully", details: true });
+     req.session.destroy((error)=>{
+      if(error){
+        return res.status(500).json({ message: "Error al cerrar sesión:"+ error.name, details: false});
+      }
+     })
+     delete req.headers["authorization"];
+
+      return res.status(200).json({ message: "logout succesfully", details: true });
    } catch (error) {
     res.status(500).json({ message: "internal server error", details: false }); 
    }
