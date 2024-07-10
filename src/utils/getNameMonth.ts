@@ -13,6 +13,6 @@ export function getMonthName(month: number) {
       "Noviembre",
       "Diciembre",
     ];
-    return meses[month];
+    return meses[month-1];
   }
   
