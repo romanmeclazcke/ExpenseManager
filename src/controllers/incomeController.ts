@@ -164,7 +164,7 @@ class incomeController {
       const created = await Income.create(data);
 
       created
-        ? res.status(200).json({ message: "income created", details: true })
+        ? res.status(200).json({ message: created, details: true })
         : res
             .status(400)
             .json({ message: "internal server error", details: false });
