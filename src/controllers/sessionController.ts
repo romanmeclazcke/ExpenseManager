@@ -65,10 +65,9 @@ class sessionController {
       if(error){
         return res.status(500).json({ message: "Error al cerrar sesión:"+ error.name, details: false});
       }
-     })
-     delete req.headers["authorization"];
-
+      delete req.headers["authorization"];
       return res.status(200).json({ message: "logout succesfully", details: true });
+     })
    } catch (error) {
     res.status(500).json({ message: "internal server error", details: false }); 
    }
