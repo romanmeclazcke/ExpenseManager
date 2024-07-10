@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import Income from "../models/incomeModel";
 import Expense from "../models/expenseModel";
 import { ExpenseAndIncomeByMonth } from "../interface/ExpenseAndIncomeByMonth";
@@ -145,13 +145,13 @@ function getDataByMonth(dataPerMonth: any, indexMonth: number) {
   if (dataPerMonth.length == 12) {
     return dataPerMonth[indexMonth];
   } else {
-    for (let expense of dataPerMonth) {
-      if (expense.dataValues.month > indexMonth) {
+    for (let element of dataPerMonth) {
+      if (element.dataValues.month > indexMonth) {
         return null; //si el numero del mes por el que estoy pasando es mayor al que busco significa que no esta (retorno null);
       }
-      if (expense.dataValues.month == indexMonth) {
+      if (element.dataValues.month == indexMonth) {
         //si encuentro el mes con el indice que busco retorno los datos del mes
-        return expense;
+        return element;
       }
     }
   }
