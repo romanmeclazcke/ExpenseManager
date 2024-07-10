@@ -21,18 +21,16 @@ export const verifySession = (req: Request, res: Response, next: NextFunction) =
         const decoded: any = jwt.verify(authToken, secret); // Decodificar el token JWT
 
         if (decoded && typeof decoded === 'object' && decoded.id && decoded.name) {
-            // Verificación básica para asegurar que decoded es un objeto y tiene id y name
             const { id, name } = decoded; // Extraer id y name del objeto decoded
 
             // Guardar los datos en la sesión
             req.session.user = { id, name };
 
-            next();
+            next(); 
         } else {
             return res.status(401).json({ error: 'Token inválido' });
         }
     } catch (error) {
-        console.error('Error verifying JWT:', error);
-        return res.status(401).json({ error: 'Token inválido' });
+        return res.status(500).json({ message: 'Internal server error' });
     }
 };
