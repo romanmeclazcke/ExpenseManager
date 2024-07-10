@@ -18,7 +18,7 @@ routerExpense.get(`${path}/:id`, authJWT_1.verifySession, (req, res) => {
 routerExpense.get(`${path}/category/:idCategory`, authJWT_1.verifySession, (req, res) => {
     expensecontroller.getExpenseByCategory(req, res);
 });
-routerExpense.get(`${path}/summary`, authJWT_1.verifySession, (req, res) => {
+routerExpense.get(`${path}/summary/month`, authJWT_1.verifySession, (req, res) => {
     expensecontroller.getExpenseByMonths(req, res);
 });
 routerExpense.post(`${path}/new`, authJWT_1.verifySession, (req, res) => {

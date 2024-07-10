@@ -96,27 +96,40 @@ class incomeController {
     async getIncomeByMonths(req, res) {
         try {
             const dataUser = req.session.user;
+            // Verifica si el usuario está autenticado
             if (!dataUser || !dataUser.id) {
                 return res.status(401).json({ message: "Unauthorized", details: false });
             }
-            const incomesByMonth = await incomeModel_1.default.findAll({
-                where: { idUser: dataUser.id },
+            // Obtener el año actual
+            const currentYear = new Date().getFullYear();
+            // Consulta para obtener los gastos agrupados por mes y año del año actual
+            const incomeByMonth = await incomeModel_1.default.findAll({
+                where: {
+                    idUser: dataUser.id,
+                    // Filtrar por el año actual
+                    date: {
+                        [dbConection_1.Op.between]: [`${currentYear}-01-01`, `${currentYear}-12-31`]
+                    }
+                },
                 attributes: [
-                    [dbConection_1.sequelize.fn('DATE_TRUNC', 'month', dbConection_1.sequelize.col('date')), 'month'],
-                    [dbConection_1.sequelize.fn('SUM', dbConection_1.sequelize.col('amount')), 'total'],
+                    [dbConection_1.sequelize.fn('YEAR', dbConection_1.sequelize.col('date')), 'year'], // Obtener el año de la fecha
+                    [dbConection_1.sequelize.fn('MONTH', dbConection_1.sequelize.col('date')), 'month'], // Obtener el mes de la fecha
+                    [dbConection_1.sequelize.fn('SUM', dbConection_1.sequelize.col('price')), 'total'] // Sumarizar el precio
                 ],
-                group: ['month'],
-                order: ['month']
+                group: ['year', 'month'], // Agrupar por año y mes
+                order: [['year', 'ASC'], ['month', 'ASC']] // Ordenar por año y mes ascendente
             });
-            if (incomesByMonth) {
-                res.status(200).json({ data: incomesByMonth, details: true });
+            // Verifica si se encontraron gastos
+            if (incomeByMonth.length > 0) {
+                res.status(200).json({ data: incomeByMonth, details: true });
             }
             else {
-                res.status(404).json({ message: "Income not found", details: false });
+                res.status(404).json({ message: "Expenses not found", details: false });
             }
         }
         catch (error) {
-            res.status(400).json({ message: "Internal server error", details: false });
+            console.error("Error fetching expenses by month:", error);
+            res.status(500).json({ message: "Internal server error", details: false });
         }
     }
     async createIncome(req, res) {

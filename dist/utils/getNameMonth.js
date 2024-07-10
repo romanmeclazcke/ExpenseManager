@@ -16,6 +16,6 @@ function getMonthName(month) {
         "Noviembre",
         "Diciembre",
     ];
-    return meses[month];
+    return meses[month - 1];
 }
 exports.getMonthName = getMonthName;
