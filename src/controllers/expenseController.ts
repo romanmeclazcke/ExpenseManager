@@ -140,7 +140,7 @@ class expenseController {
         order: [['year', 'ASC'], ['month', 'ASC']] // Ordenar por año y mes ascendente
       });
   
-      // Verifica si se encontraron gastos
+      
       if (expenseByMonths.length > 0) {
         res.status(200).json({ data: expenseByMonths, details: true });
       } else {

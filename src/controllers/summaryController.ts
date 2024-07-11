@@ -130,13 +130,13 @@ class SummaryController {
         expenseAndIncome.push(month);
       }
 
-      expenseAndIncome
+      expenseAndIncome.length>0
         ? res.status(200).json({ message: expenseAndIncome, details: true })
-        : res.status(404).json({ message: "bad request", details: false });
+        : res.status(404).json({ message: "cant do summary by month", details: false });
     } catch (error) {
       res
         .status(500)
-        .json({ message: "Error fetching summary", details: false });
+        .json({ message: "Internal server error", details: false });
     }
   }
 }
@@ -146,11 +146,10 @@ function getDataByMonth(dataPerMonth: any, indexMonth: number) {
     return dataPerMonth[indexMonth];
   } else {
     for (let element of dataPerMonth) {
-      if (element.dataValues.month > indexMonth) {
-        return null; //si el numero del mes por el que estoy pasando es mayor al que busco significa que no esta (retorno null);
+      if (element.dataValues.month > indexMonth) {//si el numero del mes por el que estoy pasando es mayor al que busco significa que no esta (retorno null);
+        return null;
       }
-      if (element.dataValues.month == indexMonth) {
-        //si encuentro el mes con el indice que busco retorno los datos del mes
+      if (element.dataValues.month == indexMonth) {//si encuentro el mes con el indice que busco retorno los datos del mes
         return element;
       }
     }
