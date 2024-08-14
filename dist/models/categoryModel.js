@@ -21,6 +21,14 @@ Category.init({
     name: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
+    },
+    color: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
+    emoji: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     }
 }, {
     sequelize: dbConection_1.sequelize,

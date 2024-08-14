@@ -45,7 +45,7 @@ app.use(categoryRouter_1.default);
 app.use(debtsRouter_1.default);
 app.use(summaryRouter_1.default);
 app.use(savingGoalsRouter_1.default);
-node_cron_1.default.schedule('*/10 * * * * *', () => {
+node_cron_1.default.schedule('0 0 * * *', () => {
     workerDebtsNotify.postMessage('SendNotify');
 });
 const bootstrap = () => {

@@ -34,7 +34,7 @@ class categoryController {
 
   async createCategory(req:Request, res:Response) {
     try {
-      const { name } = req.body;
+      const { name,color,emoji } = req.body;
       const dataUser = req.session.user;
 
 
@@ -49,6 +49,8 @@ class categoryController {
       const data = {
         idUser: dataUser.id,
         name: name,
+        color:`#${color}`,
+        emoji:emoji
       };
 
       const created = await Category.create(data);

@@ -61,10 +61,9 @@ app.use(routerSummary)
 app.use(routerSavingGoals);
  
 
-
-  cron.schedule('*/10 * * * * *', () => {
-      workerDebtsNotify.postMessage('SendNotify')
-  });
+cron.schedule('0 0 * * *', () => {
+    workerDebtsNotify.postMessage('SendNotify');
+});
 
 
 const bootstrap = () => {

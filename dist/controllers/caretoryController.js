@@ -33,7 +33,7 @@ class categoryController {
     }
     async createCategory(req, res) {
         try {
-            const { name } = req.body;
+            const { name, color, emoji } = req.body;
             const dataUser = req.session.user;
             if (!dataUser || !name) {
                 return res.status(401).json({ message: 'Unauthorized' });
@@ -44,6 +44,8 @@ class categoryController {
             const data = {
                 idUser: dataUser.id,
                 name: name,
+                color: `#${color}`,
+                emoji: emoji
             };
             const created = await categoryModel_1.default.create(data);
             created

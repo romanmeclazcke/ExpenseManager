@@ -5,7 +5,7 @@ const sequelize_1 = require("sequelize");
 Object.defineProperty(exports, "Op", { enumerable: true, get: function () { return sequelize_1.Op; } });
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
-exports.sequelize = new sequelize_1.Sequelize(process.env.DATABASE ?? '', process.env.USERNAME ?? '', process.env.PASSWORD, {
+exports.sequelize = new sequelize_1.Sequelize(process.env.DATABASE ?? '', process.env.USERNAME_DB ?? '', process.env.PASSWORD, {
     host: process.env.HOST,
     dialect: 'mysql',
     pool: {

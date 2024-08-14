@@ -20,6 +20,15 @@ class Category extends Model{
     name: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    color:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    emoji:{
+        type: DataTypes.STRING,
+        allowNull: false
+
     }
 },{
     sequelize,
