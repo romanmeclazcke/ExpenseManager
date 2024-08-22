@@ -6,6 +6,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const userModel_1 = __importDefault(require("../models/userModel"));
 const bycriptResourse_1 = require("../services/encryptServices/bycriptResourse");
 class UserController {
+    async getUserById(req, res) {
+        const dataUser = req.session.user;
+        if (!dataUser || !dataUser.id) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+        const user = await userModel_1.default.findOne({
+            attributes: { exclude: ['password', 'email'] },
+            where: {
+                id: dataUser.id,
+            },
+        });
+        user ?
+            res.status(200).json({ message: user, details: true })
+            : res.status(404).json({ message: "User not found", details: true });
+    }
     async createUser(req, res) {
         try {
             const { email, name, lastname, password } = req.body;
