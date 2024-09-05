@@ -16,6 +16,7 @@ import routerSummary from "../routes/summaryRouter";
 import routerSavingGoals from "../routes/savingGoalsRouter";
 
 
+
 import { syncDatabase } from "../config/db/dbConection";
 import cron from 'node-cron';
 import {UserSession} from "../interface/UserSession";
